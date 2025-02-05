@@ -3,6 +3,7 @@
 .settings/
 .project
 .classpath
+.factorypath
 
 # 빌드 및 바이너리 파일
 build/
