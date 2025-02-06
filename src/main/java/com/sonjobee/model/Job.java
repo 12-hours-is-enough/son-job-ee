@@ -24,4 +24,17 @@ public class Job {
     private Date applicationDeadline;
     private Date createdAt;
     private Date updatedAt;
+    
+    // schedule 값이 유효한지 확인하는 메서드
+    private boolean isValidSchedule(String schedule) {
+        return schedule.equals("평일") || schedule.equals("주말") || schedule.equals("상관없음");
+    }
+
+    public void setSchedule(String schedule) {
+        if (isValidSchedule(schedule)) {
+            this.schedule = schedule;
+        } else {
+            this.schedule = "상관없음";  // 기본값 설정
+        }
+    }
 }
