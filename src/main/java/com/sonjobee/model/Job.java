@@ -26,7 +26,9 @@ public class Job {
     private Date updatedAt;
     
     // schedule 값이 유효한지 확인하는 메서드
+
     public static boolean isValidSchedule(String schedule) {
+
         return schedule.equals("평일") || schedule.equals("주말") || schedule.equals("상관없음");
     }
 

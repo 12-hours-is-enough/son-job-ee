@@ -12,7 +12,15 @@ import java.util.List;
 import java.sql.Date;
 
 public class JobDAO {
-    // 전체 Job 목록 조회
+	/*
+	 -   공고 전체 데이터 가져오기
+	 -   공고 세부정보 가져오기
+	 -   한 개 공고 수정하기
+ 	 -   한 개 공고 삭제하기
+  	 -   한 개 공고 등록하기
+	 */
+	
+    // get all job data
     public List<Job> getAllJobs() {
     	Connection conn = null;
         PreparedStatement pstmt = null;
@@ -90,6 +98,7 @@ public class JobDAO {
         return job;
     }
     
+
     // 공고 수정하기
     public static boolean updateJobInfo(int jobId, Job jobDto) {
         Connection conn = null;
@@ -118,6 +127,7 @@ public class JobDAO {
             DBConnection.close(conn, pstmt, null);
         }
     }
+
     
 }
 
@@ -134,5 +144,6 @@ public class JobDAO {
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
     FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE 
+
  */
 
