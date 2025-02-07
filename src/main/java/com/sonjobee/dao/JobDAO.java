@@ -7,10 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.sonjobee.model.Job;
-import com.sonjobee.model.JobDetail;
-import com.sonjobee.model.JobSimple;
+import com.sonjobee.model.User;
 import com.sonjobee.util.DBConnection;
 
 public class JobDAO {
@@ -56,6 +56,93 @@ public class JobDAO {
 		}
 		return jobs;
 	}
+<<<<<<< Updated upstream
+=======
+	
+
+    // 특정 사용자가 지원한 공고 리스트 가져오기
+	public List<Job> getAppliedJobs(int userId) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+        List<Job> appliedJobs = new ArrayList<>();
+        List<Integer> jobIds = new ArrayList<>();
+
+		try {
+			conn = DBConnection.getConnection();
+			
+			// step1
+			// 지원한 job_id 목록 가져오기
+			pstmt = conn.prepareStatement("SELECT applied_job_ids FROM users WHERE id = ?");
+			pstmt.setInt(1, userId);
+			rs = pstmt.executeQuery();
+			
+
+			while (rs.next()) {
+				List<Integer> tempList = User.convertJsonToIntegerList(rs.getString("applied_job_ids"));
+				if (tempList != null) {
+			        jobIds.addAll(tempList); // 리스트 전체 추가
+			    }
+			}
+			
+			// step2 - 가져온 jobIds로 jobs 테이블에서 데이터 조회
+			 if (!jobIds.isEmpty()) {
+		            // 🔹 SQL IN 절을 사용하여 한 번에 조회
+		            String sql = "SELECT * FROM jobs WHERE id IN (" + 
+		                         jobIds.stream().map(id -> "?").collect(Collectors.joining(",")) + ")";
+
+		            pstmt = conn.prepareStatement(sql);
+		            int index = 1;
+		            for (int jobId : jobIds) {
+		                pstmt.setInt(index++, jobId);
+		            }
+
+		            rs = pstmt.executeQuery();
+		            while (rs.next()) {
+		                Job job = new Job();
+		                job.setId(rs.getInt("id"));
+		                job.setCompanyId(rs.getInt("company_id"));
+		                job.setLocation(rs.getString("location"));
+		                job.setJobCategory(rs.getString("job_category"));
+		                job.setSalary(rs.getString("salary"));
+		                job.setSchedule(rs.getString("schedule"));
+		                job.setAdditionalInfo(rs.getString("additional_info"));
+		                job.setApplicationDeadline(rs.getDate("application_deadline"));
+		                job.setCreatedAt(rs.getTimestamp("created_at"));
+		                job.setUpdatedAt(rs.getTimestamp("updated_at"));
+		                appliedJobs.add(job);
+		            }
+		        }
+//			
+//			for(int jobId : jobIds) {
+//				pstmt = conn.prepareStatement("SELECT * FROM jobs where jobId = ?");
+//				pstmt.setInt(1, jobId);
+//				rs = pstmt.executeQuery();
+//				while (rs.next()) {
+//					Job job = new Job();
+//					job.setId(rs.getInt("id"));
+//					job.setCompanyId(rs.getInt("company_id"));
+//					job.setLocation(rs.getString("location"));
+//					job.setJobCategory(rs.getString("job_category"));
+//					job.setSalary(rs.getString("salary"));
+//					job.setSchedule(rs.getString("schedule"));
+//					job.setAdditionalInfo(rs.getString("additional_info"));
+//					job.setApplicationDeadline(rs.getDate("application_deadline"));
+//					job.setCreatedAt(rs.getTimestamp("created_at"));
+//					job.setUpdatedAt(rs.getTimestamp("updated_at"));
+//					appliedJobs.add(job);
+//				}
+//			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Database error occurred while fetching appliedJobs", e);
+		} finally {
+			DBConnection.close(conn, pstmt, rs);
+		}
+		return appliedJobs;
+	}
+>>>>>>> Stashed changes
 
 	// get on job data - 공고 수정 시 필요
 	public Job getOneJob(int jobId) {
@@ -296,17 +383,22 @@ public class JobDAO {
 //        int jobIdToDelete = jobIdToFetch; // 삭제할 공고 ID
 //        boolean isDeleted = JobDAO.deleteJob(jobIdToDelete);
 //        System.out.println("\n🗑 공고 삭제 결과: " + (isDeleted ? "성공" : "실패"));
-//    }
+	
+		// 9 지원 공고 현황 확인 테스트
+//		int testUserId = 6; // 테스트할 사용자 ID
+//		List<Job> appliedJobs = getAppliedJobs(testUserId);
+//
+//		// 결과 출력
+//		System.out.println("사용자 ID: " + testUserId + "의 지원한 공고 리스트:");
+//		for (Job job : appliedJobs) {
+//			System.out.println("공고 ID: " + job.getId() + ", 직군: " + job.getJobCategory() +
+//                           ", 위치: " + job.getLocation() + ", 급여: " + job.getSalary());
+//		}
+//
+//    // 지원한 공고 개수 확인
+//		System.out.println("총 지원한 공고 수: " + appliedJobs.size());
+//	}    
 
 }
 
-/*
- * id INT AUTO_INCREMENT PRIMARY KEY, company_id INT NOT NULL, location
- * VARCHAR(255) NOT NULL, job_category VARCHAR(100) NOT NULL, salary
- * VARCHAR(100), schedule ENUM('평일', '주말', '상관없음') DEFAULT '상관없음',
- * additional_info TEXT, application_deadline DATE, created_at TIMESTAMP DEFAULT
- * CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE
- * CURRENT_TIMESTAMP, FOREIGN KEY (company_id) REFERENCES companies(id) ON
- * DELETE CASCADE
- * 
- */
+
