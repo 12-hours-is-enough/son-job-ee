@@ -130,68 +130,6 @@ public class JobDAO {
 		return jobs;
 	}
 
-	// 리스트에 보여줄 job 간단 정보
-	public List<JobSimple> getSimpleJobInfo() {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		List<JobSimple> jobs = new ArrayList<>();
-
-		try {
-			conn = DBConnection.getConnection();
-			pstmt = conn.prepareStatement("SELECT * FROM jobs");
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				JobSimple job = new JobSimple();
-				job.setId(rs.getInt("id"));
-				job.setCompanyId(rs.getInt("company_id"));
-				job.setLocation(rs.getString("location"));
-				job.setJobCategory(rs.getString("job_category"));
-				job.setSalary(rs.getString("salary"));
-				job.setSchedule(rs.getString("schedule"));
-				jobs.add(job);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Database error occurred while fetching simple info", e);
-		} finally {
-			DBConnection.close(conn, pstmt, rs);
-		}
-		return jobs;
-	}
-
-	// job 세부정보
-	public JobDetail getDetailJobInfo(int jobId) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		JobDetail job = null;
-
-		try {
-			conn = DBConnection.getConnection();
-			pstmt = conn.prepareStatement("SELECT * FROM jobs WHERE id=?");
-			pstmt.setInt(1, jobId);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				job = new JobDetail();
-				job.setAdditionalInfo(rs.getString("additional_info"));
-				job.setApplicationDeadline(rs.getDate("application_deadline"));
-				job.setCreatedAt(rs.getTimestamp("created_at"));
-				job.setUpdatedAt(rs.getTimestamp("updated_at"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Database error occurred while fetching Detail info", e);
-		} finally {
-			DBConnection.close(conn, pstmt, rs);
-		}
-		return job;
-	}
-	
 
 	// 공고 생성하기
 	public static boolean createJob(Job job) {
