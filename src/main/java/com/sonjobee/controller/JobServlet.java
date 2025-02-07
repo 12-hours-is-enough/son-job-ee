@@ -95,13 +95,33 @@ public class JobServlet extends HttpServlet {
 
 	}
     
-    // job 삭제
+    // job 삭제 맞는지 확인 플리즈
     @Override
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String pathInfo = request.getPathInfo();
-    	int jobId = Integer.parseInt(pathInfo.substring(1));
-    	// job delete 추가
-    
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String pathInfo = request.getPathInfo();
+
+        if (pathInfo == null || pathInfo.equals("/")) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid job ID");
+            return;
+        }
+
+        try {
+            int jobId = Integer.parseInt(pathInfo.substring(1));
+            
+            boolean isDeleted = JobDAO.deleteJob(jobId);
+
+            if (isDeleted) {
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT); // 204: 성공적으로 삭제됨
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Job not found or already deleted.");
+            }
+
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid job ID format");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred while deleting job.");
+        }
     }
 
 }
