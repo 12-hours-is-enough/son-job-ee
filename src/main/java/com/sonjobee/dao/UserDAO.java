@@ -203,9 +203,6 @@ public class UserDAO {
             if (!jobIds.contains(jobId)) {
                 jobIds.add(jobId);
             }
-            else {
-            	System.out.println("이미 지원한 공고입니다.");
-            }
 
             // 3. JSON 문자열로 변환
             String updatedJson = objectMapper.writeValueAsString(jobIds);
@@ -228,15 +225,15 @@ public class UserDAO {
 	}
 
 	// user 삭제
-	public static boolean deleteUser(String email) {
+	public static boolean deleteUser(int userId) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "DELETE FROM users WHERE email = ?";
+			String sql = "DELETE FROM users WHERE id = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, email);
+			pstmt.setInt(1, userId);
 
 			int rowsAffected = pstmt.executeUpdate();
 			return rowsAffected > 0; // 성공적으로 삭제되면 true 반환
@@ -249,32 +246,6 @@ public class UserDAO {
 		}
 	}
 
-	/*
-	 * 지원하기 버튼 누르면 user 테이블에 applied job에 job id 넣기
-	 */
-	// user applied job (update) SQL
-	public static boolean updateCompany(int userId, int jobId) throws SQLException {
-
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-
-		try {
-			conn = DBConnection.getConnection();
-			String sql = "UPDATE users SET applied_job_ids=? WHERE id = ?";
-			pstmt.setInt(1, jobId);
-			pstmt.setInt(2, userId);
-
-			if (pstmt.executeUpdate() != 0) {
-				return true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			DBConnection.close(conn, pstmt);
-		}
-		return false;
-	}
 
 	public static void main(String[] args) {
         
