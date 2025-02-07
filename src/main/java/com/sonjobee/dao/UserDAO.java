@@ -7,10 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sonjobee.model.Company;
 import com.sonjobee.model.User;
 import com.sonjobee.util.DBConnection;
 
@@ -18,8 +18,8 @@ public class UserDAO {
 
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
-	// 특정 User 정보 전체 정보 가져오기 - 마이페이지
-	public static User getUserInfo(String email) {
+	// 특정 User 정보 전체 정보 가져오기 - 마이페이지 (session에 있는 id로 가져옴)
+	public static User getUserInfo(int userId) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -27,8 +27,8 @@ public class UserDAO {
 
 		try {
 			conn = DBConnection.getConnection();
-			pstmt = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
-			pstmt.setString(1, email);
+			pstmt = conn.prepareStatement("SELECT * FROM users WHERE id = ?");
+			pstmt.setInt(1, userId);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -78,19 +78,6 @@ public class UserDAO {
 				if (storedPassword.equals(inputPassword)) {
 					user = new User();
 					user.setId(rs.getInt("id"));
-					user.setName(rs.getString("name"));
-					user.setPhone(rs.getString("phone"));
-					user.setBirthDate(rs.getDate("birth_date"));
-					user.setEmail(rs.getString("email"));
-					user.setGender(rs.getString("gender"));
-					user.setExperience(rs.getString("experience"));
-					user.setPreferredLocation(User.convertJsonToList(rs.getString("preferred_location")));
-					user.setPreferredSchedule(User.convertJsonToList(rs.getString("preferred_schedule")));
-					user.setPreferredJobCategory(User.convertJsonToList(rs.getString("preferred_job_category")));
-					user.setAppliedJobIds(User.convertJsonToIntegerList(rs.getString("applied_job_ids")));
-					user.setAdditionalInfo(rs.getString("additional_info"));
-					user.setCreatedAt(rs.getTimestamp("created_at"));
-					user.setUpdatedAt(rs.getTimestamp("updated_at"));
 					System.out.println("⭕ 로그인 성공");
 				} else {
 					System.out.println("❌ 비밀번호가 일치하지 않습니다.");
@@ -134,7 +121,7 @@ public class UserDAO {
 	        pstmt = conn.prepareStatement(sql);
 	        pstmt.setString(1, user.getName());
 	        pstmt.setString(2, user.getPhone());
-	        pstmt.setDate(3, user.getBirthDate());
+	        pstmt.setDate(3, new Date(user.getBirthDate().getTime()));
 	        pstmt.setString(4, user.getEmail());
 	        pstmt.setString(5, user.getPassword());
 	        pstmt.setString(6, user.getGender());
@@ -163,20 +150,21 @@ public class UserDAO {
 
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "UPDATE users SET name = ?, phone = ?, birth_date = ?, gender = ?, experience = ?, "
+			String sql = "UPDATE users SET name = ?, phone = ?, birth_date = ?, password = ?, gender = ?, experience = ?, "
 					+ "preferred_location = ?, preferred_schedule = ?, preferred_job_category = ?, additional_info = ?, updated_at = NOW() "
 					+ "WHERE id = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userDto.getName());
 			pstmt.setString(2, userDto.getPhone());
-			pstmt.setDate(3, userDto.getBirthDate());
-			pstmt.setString(4, userDto.getGender());
-			pstmt.setString(5, userDto.getExperience());
-			pstmt.setString(6, objectMapper.writeValueAsString(userDto.getPreferredLocation())); // JSON 변환
-			pstmt.setString(7, objectMapper.writeValueAsString(userDto.getPreferredSchedule()));
-			pstmt.setString(8, objectMapper.writeValueAsString(userDto.getPreferredJobCategory()));
-			pstmt.setString(9, userDto.getAdditionalInfo());
-			pstmt.setInt(10, userId);
+			pstmt.setDate(3, new Date(userDto.getBirthDate().getTime()));
+			pstmt.setString(4, userDto.getPassword());
+			pstmt.setString(5, userDto.getGender());
+			pstmt.setString(6, userDto.getExperience());
+			pstmt.setString(7, objectMapper.writeValueAsString(userDto.getPreferredLocation())); // JSON 변환
+			pstmt.setString(8, objectMapper.writeValueAsString(userDto.getPreferredSchedule()));
+			pstmt.setString(9, objectMapper.writeValueAsString(userDto.getPreferredJobCategory()));
+			pstmt.setString(10, userDto.getAdditionalInfo());
+			pstmt.setInt(11, userId);
 
 			int rowsAffected = pstmt.executeUpdate();
 			return rowsAffected > 0; // 성공 시 true 반환
@@ -210,6 +198,33 @@ public class UserDAO {
 			DBConnection.close(conn, pstmt, null);
 		}
 	}
+	
+	/* 지원하기 버튼 누르면 user 테이블에 applied job에 job id 넣기
+	 * */
+	// user applied job (update) SQL
+	public static boolean updateCompany(int userId, int jobId) throws SQLException {
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = DBConnection.getConnection();
+			String sql = "UPDATE users SET applied_job_ids=? WHERE id = ?";
+			pstmt.setInt(1, jobId);
+			pstmt.setInt(2, userId);
+
+    	    if(pstmt.executeUpdate() != 0) {
+    	    	return true;
+    	    }
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBConnection.close(conn, pstmt);
+		}
+		return false;
+	}
+	
 
 	/*
 	public static void main(String[] args) {

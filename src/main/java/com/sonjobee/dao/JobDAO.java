@@ -56,8 +56,8 @@ public class JobDAO {
 		}
 		return jobs;
 	}
-<<<<<<< Updated upstream
-=======
+
+
 	
 
     // 특정 사용자가 지원한 공고 리스트 가져오기
@@ -66,6 +66,7 @@ public class JobDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
         List<Job> appliedJobs = new ArrayList<>();
+
         List<Integer> jobIds = new ArrayList<>();
 
 		try {
@@ -113,36 +114,18 @@ public class JobDAO {
 		                appliedJobs.add(job);
 		            }
 		        }
-//			
-//			for(int jobId : jobIds) {
-//				pstmt = conn.prepareStatement("SELECT * FROM jobs where jobId = ?");
-//				pstmt.setInt(1, jobId);
-//				rs = pstmt.executeQuery();
-//				while (rs.next()) {
-//					Job job = new Job();
-//					job.setId(rs.getInt("id"));
-//					job.setCompanyId(rs.getInt("company_id"));
-//					job.setLocation(rs.getString("location"));
-//					job.setJobCategory(rs.getString("job_category"));
-//					job.setSalary(rs.getString("salary"));
-//					job.setSchedule(rs.getString("schedule"));
-//					job.setAdditionalInfo(rs.getString("additional_info"));
-//					job.setApplicationDeadline(rs.getDate("application_deadline"));
-//					job.setCreatedAt(rs.getTimestamp("created_at"));
-//					job.setUpdatedAt(rs.getTimestamp("updated_at"));
-//					appliedJobs.add(job);
-//				}
-//			}
+
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Database error occurred while fetching appliedJobs", e);
+
 		} finally {
 			DBConnection.close(conn, pstmt, rs);
 		}
 		return appliedJobs;
 	}
->>>>>>> Stashed changes
+
 
 	// get on job data - 공고 수정 시 필요
 	public Job getOneJob(int jobId) {
@@ -193,7 +176,7 @@ public class JobDAO {
 			pstmt.setInt(1, companyId);
 
 			rs = pstmt.executeQuery();
-
+ 
 			while (rs.next()) {
 				Job job = new Job();
 				job.setId(rs.getInt("id"));
@@ -216,6 +199,8 @@ public class JobDAO {
 		}
 		return jobs;
 	}
+	
+	
 
 
 	// 공고 생성하기
