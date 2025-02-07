@@ -91,7 +91,6 @@ public class JobServlet extends HttpServlet {
         job.setAdditionalInfo(request.getParameter("additionalInfo"));
         job.setApplicationDeadline(TimestampConverter.convertStringToTimestamp(request.getParameter("applicationDeadline")));
     	
-        JobDAO jobDAO = new JobDAO();
         // job 생성 추가
 
 	}
