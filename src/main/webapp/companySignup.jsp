@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=42dot+Sans:wght@300..800&family=Noto+Sans+KR:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    
     <title>구인자 회원가입</title>
     <style>
         body {
@@ -11,7 +15,9 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
             background-color: #f8f8f8;
+            font-family: "Noto Sans KR", sans-serif;
         }
         .signup-container {
             text-align: center;
@@ -41,7 +47,7 @@
 <body>
     <div class="signup-container">
         <h2>구인자 회원가입</h2>
-        <form action="companySignupProcess.jsp" method="post">
+        <form action="signup?usertype=company" method="post">
             <input type="text" class="input-box" name="companyName" placeholder="회사 이름" required>
             <input type="text" class="input-box" name="companyPhone" placeholder="회사 전화번호" required>
             <input type="email" class="input-box" name="companyEmail" placeholder="이메일 (아이디)" required>

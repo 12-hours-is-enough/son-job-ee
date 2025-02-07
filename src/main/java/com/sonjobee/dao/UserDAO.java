@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sonjobee.model.Company;
 import com.sonjobee.model.User;
 import com.sonjobee.util.DBConnection;
 
@@ -212,6 +213,33 @@ public class UserDAO {
 			DBConnection.close(conn, pstmt, null);
 		}
 	}
+	
+	/* 지원하기 버튼 누르면 user 테이블에 applied job에 job id 넣기
+	 * */
+	// user applied job (update) SQL
+	public static boolean updateCompany(int userId, int jobId) throws SQLException {
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = DBConnection.getConnection();
+			String sql = "UPDATE users SET applied_job_ids=? WHERE id = ?";
+			pstmt.setInt(1, jobId);
+			pstmt.setInt(2, userId);
+
+    	    if(pstmt.executeUpdate() != 0) {
+    	    	return true;
+    	    }
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBConnection.close(conn, pstmt);
+		}
+		return false;
+	}
+	
 
 	/*
 	public static void main(String[] args) {

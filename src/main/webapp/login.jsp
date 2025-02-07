@@ -116,10 +116,13 @@
 <body>
     <div class="login-container">
         <h2>로그인</h2>
-        <form action="loginProcess.jsp" method="post">
+        
+        <!-- login button 누르면 email, pw, usertype 넘기기 (/login 에 post로 넘길거임) -->
+        
+        <form action="login" method="post">
             <div class="radio-group">
-                <label><input type="radio" name="userType" value="employer" required> 구인자</label>
-                <label><input type="radio" name="userType" value="jobseeker" required> 구직자</label>
+                <label><input type="radio" name="userType" value="user" required> 구인자</label>
+                <label><input type="radio" name="userType" value="company" required> 구직자</label>
             </div>
             <div class="form-group">
                 <label for="userId">ID &nbsp;</label>
@@ -129,10 +132,11 @@
                 <label for="userPw">PW</label>
                 <input type="password" id="userPw" name="userPw" class="input-box" required>
             </div>
-            <button type="submit" class="login-btn">log in</button>
+            
+            <button type="submit" class="login-btn">log in</button> 
         </form>
-        <a href="userSignup.jsp" class="signup-link">회원가입</a>
-         <a href="jobList.jsp" class="signup-link">job list</a>
+        <a href="signup" class="signup-link">회원가입</a>
+        <a href="jobList.jsp" class="signup-link">job list</a>
     </div>
 </body>
 </html>

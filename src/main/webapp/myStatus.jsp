@@ -1,4 +1,19 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@page import="com.sonjobee.model.Job"%>
+<%@page import="com.sonjobee.dao.JobDAO"%>
+<%@ page import="java.util.List" %>
+
+<%-- 지원 현황 
+		내가 지원한 공고 jobDAO에서 데이터 불러오기
+ --%>
+<%
+	int userId = 1; 
+	JobDAO jobDAO = new JobDAO();
+	List<Job> appliedJobs = jobDAO.getAppliedJobs(userId);
+%>
+
+
+ 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -130,34 +145,41 @@
     <div class="content">
         <h2 class="title">▶ 지원 현황</h2>
 
-        <div class="job-card">
-            <div class="job-title">운전 기사 구합니다.</div>
-            <div class="job-time">시간: 9:00 - 15:00</div>
-            <div class="job-company">
-                <span>해바라기 학원</span>
-                <span class="toggle-btn" onclick="toggleDetail(this)">▼</span>
-            </div>
-            <div class="job-detail">
-                <p>연락처: 02-1234-5678</p>
-            </div>
-        </div>
-
-        <div class="job-card">
-            <div class="job-title">부업 구합니다.</div>
-            <div class="job-time">시간: 9:00 - 17:00</div>
-            <div class="job-company">
-                <span>안경 공장</span>
-                <span class="toggle-btn" onclick="toggleDetail(this)">▼</span>
-            </div>
-            <div class="job-detail">
-                <p>경력: 무관</p>
-                <p>위치: 대구</p>
-                <p>하는 일: 포장 작업</p>
-                <p>연락처: 02-1232-0934</p>
-            </div>
-        </div>
+        <% if (appliedJobs.isEmpty()) { %>
+            <p>지원한 공고가 없습니다.</p>
+        <% } else { %>
+            <% for (Job job : appliedJobs) { %>
+                <div class="job-card">
+                    <div class="job-title"><%= job.getJobCategory() %></div>
+                    <div class="job-time">시간: <%= job.getSchedule() %></div>
+                    <div class="job-company">
+                        <span><%= job.getLocation() %></span>
+                        <span class="toggle-btn" onclick="toggleDetail(this)">▼</span>
+                    </div>
+                    <div class="job-detail">
+                        <p>회사 ID: <%= job.getCompanyId() %></p>
+                        <p>급여: <%= job.getSalary() %></p>
+                        <p>추가 정보: <%= job.getAdditionalInfo() %></p>
+                        <p>지원 마감일: <%= job.getApplicationDeadline() %></p>
+                    </div>
+                </div>
+            <% } %>
+        <% } %>
 
     </div>
+    
+     <script>
+        function toggleDetail(btn) {
+            let detail = btn.parentNode.nextElementSibling;
+            if (detail.style.display === "block") {
+                detail.style.display = "none";
+                btn.textContent = "▼";
+            } else {
+                detail.style.display = "block";
+                btn.textContent = "▲";
+            }
+        }
+    </script>
 
     <script>
         function toggleDetail(btn) {

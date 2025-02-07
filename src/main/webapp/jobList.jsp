@@ -1,126 +1,156 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@page import="com.sonjobee.model.Job"%>
+<%@page import="com.sonjobee.dao.JobDAO"%>
+<%@ page import="java.util.List" %>
+
+<%-- jobDAO 에서 데이터 받아오기 --%>
+<%
+    JobDAO jobDAO = new JobDAO();
+    List<Job> jobList = jobDAO.getAllJobs();
+%>
+
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=42dot+Sans:wght@300..800&family=Noto+Sans+KR:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	<html lang="ko">
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <link rel="preconnect" href="https://fonts.googleapis.com">
+	    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+	    
+	    <title>공고 리스트</title>
+	    <style>
+	        body {
+	            display: flex;
+	            margin: 0;
+	            font-family: "Noto Sans KR", sans-serif;
+	            background-color: #f8f8f8;
+	        }
 	
-    <title>공고 리스트</title>
-    <style>
-        body {
-            display: flex;
-            margin: 0;
-		    font-family: "Noto Sans KR", serif;
-		    font-optical-sizing: auto;
-		    font-weight: 500;
-		    font-style: normal;
-            background-color: #f8f8f8;
-        }
-
-        /* 사이드바 스타일 */
-        .sidebar {
-            width: 200px;
-            background: #f8f8f8;
-            padding: 20px;
-            height: 100vh;
-            box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .sidebar h2 {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .sidebar a {
-            display: block;
-            padding: 10px;
-            margin-bottom: 5px;
-            text-decoration: none;
-            color: black;
-            border-radius: 5px;
-        }
-
-        .sidebar a.active {
-            background-color: lightblue;
-            font-weight: bold;
-        }
-
-        .user-info {
-            margin-top: 30px;
-            font-size: 14px;
-            color: #333;
-            font-weight: bold;
-        }
-
-        /* 메인 컨텐츠 스타일 */
-        .content {
-            flex: 1;
-            padding: 30px;
-        }
-
-        .title {
-            font-size: 20px;
-            font-weight: bold;
-            padding: 10px;
-            background-color: #d9e6fc;
-            border-radius: 10px;
-            display: inline-block;
-        }
-
-        /* 공고 카드 스타일 */
-        .job-card {
-            background: #eaeaea;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .job-card:hover {
-            background: #d5d5d5;
-        }
-
-        .job-title {
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .job-time {
-            font-size: 14px;
-            margin-top: 5px;
-            color: #555;
-        }
-
-        .job-company {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .toggle-btn {
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        /* 아코디언 스타일 */
-        .job-detail {
-            display: none;
-            padding: 10px;
-            margin-top: 10px;
-            border-top: 1px solid #ccc;
-            font-size: 14px;
-        }
-
-    </style>
-</head>
-<body>
+	        /* 사이드바 스타일 */
+	        .sidebar {
+	            width: 200px;
+	            background: #f8f8f8;
+	            padding: 20px;
+	            height: 100vh;
+	            box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+	        }
+	
+	        .sidebar h2 {
+	            font-size: 18px;
+	            font-weight: bold;
+	            margin-bottom: 20px;
+	            cursor: pointer;
+	        }
+	
+	        .sidebar a {
+	            display: block;
+	            padding: 10px;
+	            margin-bottom: 5px;
+	            text-decoration: none;
+	            color: black;
+	            border-radius: 5px;
+	        }
+	
+	        .sidebar a.active {
+	            background-color: lightblue;
+	            font-weight: bold;
+	        }
+	
+	        .user-info {
+	            margin-top: 30px;
+	            font-size: 14px;
+	            color: #333;
+	            font-weight: bold;
+	        }
+	
+	        /* 메인 컨텐츠 스타일 */
+	        .content {
+	            flex: 1;
+	            padding: 30px;
+	        }
+	
+	        .title {
+	            font-size: 20px;
+	            font-weight: bold;
+	            padding: 10px;
+	            background-color: #d9e6fc;
+	            border-radius: 10px;
+	            display: inline-block;
+	        }
+	
+	        /* 공고 카드 스타일 */
+	        .job-card {
+	            background: #eaeaea;
+	            border-radius: 10px;
+	            padding: 15px;
+	            margin: 15px 0;
+	            cursor: pointer;
+	            transition: all 0.3s ease-in-out;
+	        }
+	
+	        .job-card:hover {
+	            background: #d5d5d5;
+	        }
+	
+	        .job-title {
+	            font-weight: bold;
+	            font-size: 18px;
+	        }
+	
+	        .job-time {
+	            font-size: 14px;
+	            margin-top: 5px;
+	            color: #555;
+	        }
+	
+	        .job-company {
+	            display: flex;
+	            justify-content: space-between;
+	            margin-top: 10px;
+	            font-size: 14px;
+	            color: #666;
+	        }
+	
+	        .toggle-btn {
+	            font-size: 16px;
+	            cursor: pointer;
+	        }
+	
+	        /* 아코디언 스타일 */
+	        .job-detail {
+	            display: none;
+	            padding: 10px;
+	            margin-top: 10px;
+	            border-top: 1px solid #ccc;
+	            font-size: 14px;
+	        }
+	
+	        /* 지원하기 버튼 스타일 */
+	        .apply-btn {
+	            display: block;
+	            width: 100%;
+	            max-width: 150px;
+	            padding: 8px;
+	            margin-top: 10px;
+	            background-color: #4CAF50;
+	            color: white;
+	            border: none;
+	            border-radius: 5px;
+	            font-size: 14px;
+	            font-weight: bold;
+	            text-align: center;
+	            cursor: pointer;
+	            transition: 0.3s ease-in-out;
+	        }
+	
+	        .apply-btn:hover {
+	            background-color: #45a049;
+	        }
+	
+	    </style>
+	</head>
+	<body>
 
     <!-- 사이드바 -->
     <div class="sidebar">
@@ -134,36 +164,52 @@
 
     <!-- 메인 컨텐츠 -->
     <div class="content">
-        <h2 class="title">▶ 공고 리스트</h2>
+        <div class="content">
+		    <h2 class="title">▶ 공고 리스트</h2>
+		
+		    <% for (Job job : jobList) { %>
+		        <div class="job-card">
+		            <div class="job-title"><%= job.getJobCategory() %></div>
+		            <div class="job-time">시간: <%= job.getSchedule() %></div>
+		            <div class="job-company">
+		                <span><%= job.getLocation() %></span>
+		                <span class="toggle-btn" onclick="toggleDetail(this)">▼</span>
+		            </div>
+		            <div class="job-detail">
+		                <p>회사 ID: <%= job.getCompanyId() %></p>
+		                <p>급여: <%= job.getSalary() %></p>
+		                <p>추가 정보: <%= job.getAdditionalInfo() %></p>
+		                <p>지원 마감일: <%= job.getApplicationDeadline() %></p>
+		                <p>연락처: 02-1234-5678</p>
+		                
+		                <!-- jobId를 포함하여 지원 요청 -->
+		                <button class="apply-btn" onclick="applyJob(<%= job.getId() %>)">지원하기</button>
+		            </div>
+		        </div>
+		    <% } %>
+		</div>
 
-        <!-- 공고 1 -->
-        <div class="job-card">
-            <div class="job-title">운전 기사 구합니다.</div>
-            <div class="job-time">시간: 9:00 - 15:00</div>
-            <div class="job-company">
-                <span>해바라기 학원</span>
-                <span class="toggle-btn" onclick="toggleDetail(this)">▼</span>
-            </div>
-            <div class="job-detail">
-                <p>연락처: 02-1234-5678</p>
-            </div>
-        </div>
-
-        <!-- 공고 2 -->
-        <div class="job-card">
-            <div class="job-title">부업 구합니다.</div>
-            <div class="job-time">시간: 9:00 - 17:00</div>
-            <div class="job-company">
-                <span>안경 공장</span>
-                <span class="toggle-btn" onclick="toggleDetail(this)">▼</span>
-            </div>
-            <div class="job-detail">
-                <p>경력: 무관</p>
-                <p>위치: 대구</p>
-                <p>하는 일: 포장 작업</p>
-                <p>연락처: 02-1232-0934</p>
-            </div>
-        </div>
+        <script>
+		    function applyJob(jobId) {
+		        fetch('/apply', {
+		            method: 'PUT', // PUT 요청 전송
+		            headers: {
+		                'Content-Type': 'application/json' // JSON 데이터 전송
+		            },
+		            body: JSON.stringify({ jobId: jobId }) // jobId를 JSON 데이터로 전송
+		        })
+		        .then(response => response.json()) // 응답을 JSON으로 변환
+		        .then(data => {
+		            if (data.success) {
+		                alert('지원이 완료되었습니다!');
+		            } else {
+		                alert('지원 실패: ' + data.message);
+		                // 공고 리스트로 다시 이동?
+		            }
+		        })
+		        .catch(error => console.error('Error:', error));
+		    }
+		</script>
 
     </div>
 
@@ -179,15 +225,6 @@
                 btn.textContent = "▲";
             }
         }
-
-        // 네비게이션 선택 시 활성화 효과
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', function() {
-                navItems.forEach(nav => nav.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
     </script>
 
 </body>

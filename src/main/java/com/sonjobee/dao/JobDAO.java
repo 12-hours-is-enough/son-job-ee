@@ -56,6 +56,44 @@ public class JobDAO {
 		}
 		return jobs;
 	}
+	
+
+    // 특정 사용자가 지원한 공고 리스트 가져오기
+	public List<Job> getAppliedJobs(int userId) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+        List<Job> appliedJobs = new ArrayList<>();
+
+
+		try {
+			conn = DBConnection.getConnection();
+			pstmt = conn.prepareStatement("");
+			rs = pstmt.executeQuery();
+
+
+			while (rs.next()) {
+				Job job = new Job();
+				job.setId(rs.getInt("id"));
+				job.setCompanyId(rs.getInt("company_id"));
+				job.setLocation(rs.getString("location"));
+				job.setJobCategory(rs.getString("job_category"));
+				job.setSalary(rs.getString("salary"));
+				job.setSchedule(rs.getString("schedule"));
+				job.setAdditionalInfo(rs.getString("additional_info"));
+				job.setApplicationDeadline(rs.getDate("application_deadline"));
+				job.setCreatedAt(rs.getTimestamp("created_at"));
+				job.setUpdatedAt(rs.getTimestamp("updated_at"));
+				appliedJobs.add(job);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Database error occurred while fetching DTOs", e);
+		} finally {
+			DBConnection.close(conn, pstmt, rs);
+		}
+		return appliedJobs;
+	}
 
 	// get on job data - 공고 수정 시 필요
 	public Job getOneJob(int jobId) {
@@ -106,7 +144,7 @@ public class JobDAO {
 			pstmt.setInt(1, companyId);
 
 			rs = pstmt.executeQuery();
-
+ 
 			while (rs.next()) {
 				Job job = new Job();
 				job.setId(rs.getInt("id"));
@@ -129,6 +167,8 @@ public class JobDAO {
 		}
 		return jobs;
 	}
+	
+	
 
 	// 리스트에 보여줄 job 간단 정보
 	public List<JobSimple> getSimpleJobInfo() {

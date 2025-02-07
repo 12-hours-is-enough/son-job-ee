@@ -81,13 +81,12 @@
 <body>
     <div class="signup-container">
         <h2>구직자 회원가입</h2>
-        <form action="userSignupProcess.jsp" method="post">
+        <form action="signup?usertype=user" method="post">
         
             <div class="form-group">
            		<label for="userId">아이디 &nbsp;</label>
             	<input type="text" class="input-box" name="userId" placeholder="아이디" required>
            	</div>
-           	
            	
             <div class="form-group">
            		<label for="userId">비밀번호 &nbsp;</label>
@@ -112,15 +111,22 @@
             	<input type="text" class="input-box" name="userPhone" placeholder="전화번호" required>
             </div>
             
+            
             <div class="form-group">
            		<label for="userId">생년월일 &nbsp;</label>
             	<input type="date" class="input-box" name="userBirth" required>
             </div>
+            
+            
             <div class="radio-group">
                 <label><input type="radio" name="userGender" value="female"> 여자</label>
                 <label><input type="radio" name="userGender" value="male"> 남자</label>
-            </div>
+            </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+            
+            
             <textarea class="input-box" name="userExperience" placeholder="경력사항"></textarea>
+            
+            
             <button type="submit" class="btn">회원가입</button>
         </form>
     </div>
