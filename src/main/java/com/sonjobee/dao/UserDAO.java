@@ -9,8 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sonjobee.model.Company;
 import com.sonjobee.model.User;
 import com.sonjobee.util.DBConnection;
 
@@ -58,7 +58,7 @@ public class UserDAO {
 		return user;
 	}
 
-	// 로그인을 위한 email, 비밀번호 확인 
+	// 로그인을 위한 email, 비밀번호 확인
 	public static User getUserLoginInfo(String email, String inputPassword) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -95,52 +95,52 @@ public class UserDAO {
 	}
 
 	// User 회원가입 - 회원 가입 시 동일한 유저 있는지 확인
-	public static boolean userSign(User user) {  // ✅ 매개변수 추가
-	    Connection conn = null;
-	    PreparedStatement pstmt = null;
-	    ResultSet rs = null;
+	public static boolean userSign(User user) { // ✅ 매개변수 추가
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 
-	    try {
-	        conn = DBConnection.getConnection();
+		try {
+			conn = DBConnection.getConnection();
 
-	        // 이메일 중복 체크
-	        pstmt = conn.prepareStatement("SELECT COUNT(*) FROM users WHERE email = ?");
-	        pstmt.setString(1, user.getEmail());
-	        rs = pstmt.executeQuery();
+			// 이메일 중복 체크
+			pstmt = conn.prepareStatement("SELECT COUNT(*) FROM users WHERE email = ?");
+			pstmt.setString(1, user.getEmail());
+			rs = pstmt.executeQuery();
 
-	        if (rs.next() && rs.getInt(1) > 0) {
-	            System.out.println("⚠ 이미 존재하는 이메일입니다.");
-	            return false;
-	        }
-	        rs.close();
-	        pstmt.close();
+			if (rs.next() && rs.getInt(1) > 0) {
+				System.out.println("⚠ 이미 존재하는 이메일입니다.");
+				return false;
+			}
+			rs.close();
+			pstmt.close();
 
-	        String sql = "INSERT INTO users (name, phone, birth_date, email, password, gender, experience, " +
-	                     "preferred_location, preferred_schedule, preferred_job_category, applied_job_ids, additional_info, created_at, updated_at) " +
-	                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
-	        pstmt = conn.prepareStatement(sql);
-	        pstmt.setString(1, user.getName());
-	        pstmt.setString(2, user.getPhone());
-	        pstmt.setDate(3, new Date(user.getBirthDate().getTime()));
-	        pstmt.setString(4, user.getEmail());
-	        pstmt.setString(5, user.getPassword());
-	        pstmt.setString(6, user.getGender());
-	        pstmt.setString(7, user.getExperience());
-	        pstmt.setString(8, new ObjectMapper().writeValueAsString(user.getPreferredLocation()));
-	        pstmt.setString(9, new ObjectMapper().writeValueAsString(user.getPreferredSchedule()));
-	        pstmt.setString(10, new ObjectMapper().writeValueAsString(user.getPreferredJobCategory()));
-	        pstmt.setString(11, new ObjectMapper().writeValueAsString(user.getAppliedJobIds()));
-	        pstmt.setString(12, user.getAdditionalInfo());
+			String sql = "INSERT INTO users (name, phone, birth_date, email, password, gender, experience, "
+					+ "preferred_location, preferred_schedule, preferred_job_category, applied_job_ids, additional_info, created_at, updated_at) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, user.getName());
+			pstmt.setString(2, user.getPhone());
+			pstmt.setDate(3, new Date(user.getBirthDate().getTime()));
+			pstmt.setString(4, user.getEmail());
+			pstmt.setString(5, user.getPassword());
+			pstmt.setString(6, user.getGender());
+			pstmt.setString(7, user.getExperience());
+			pstmt.setString(8, new ObjectMapper().writeValueAsString(user.getPreferredLocation()));
+			pstmt.setString(9, new ObjectMapper().writeValueAsString(user.getPreferredSchedule()));
+			pstmt.setString(10, new ObjectMapper().writeValueAsString(user.getPreferredJobCategory()));
+			pstmt.setString(11, new ObjectMapper().writeValueAsString(user.getAppliedJobIds()));
+			pstmt.setString(12, user.getAdditionalInfo());
 
-	        int rowsAffected = pstmt.executeUpdate();
-	        return rowsAffected > 0;  // 회원가입 성공 시 true 반환
+			int rowsAffected = pstmt.executeUpdate();
+			return rowsAffected > 0; // 회원가입 성공 시 true 반환
 
-	    } catch (SQLException | IOException e) {
-	        e.printStackTrace();
-	        throw new RuntimeException("Database error occurred while fetching userSign", e);
-	    } finally {
-	        DBConnection.close(conn, pstmt, rs);
-	    }
+		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Database error occurred while fetching userSign", e);
+		} finally {
+			DBConnection.close(conn, pstmt, rs);
+		}
 	}
 
 	// User 정보 수정
@@ -177,6 +177,56 @@ public class UserDAO {
 		}
 	}
 
+	// User의 applied 목록 수정
+	public static boolean updateUserAppliedList(int userId, int jobId) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DBConnection.getConnection();
+			 // 1. 기존 applied_job_ids 가져오기
+            String selectSql = "SELECT applied_job_ids FROM users WHERE id = ?";
+            pstmt = conn.prepareStatement(selectSql);
+            pstmt.setInt(1, userId);
+            rs = pstmt.executeQuery();
+
+            List<Integer> jobIds = new ArrayList<>();
+            if (rs.next()) {
+                String json = rs.getString("applied_job_ids");
+                if (json != null && !json.isEmpty()) {
+                    jobIds = objectMapper.readValue(json, new TypeReference<List<Integer>>() {});
+                }
+            }
+
+            // 2. 새로운 jobId 추가 (중복 방지)
+            if (!jobIds.contains(jobId)) {
+                jobIds.add(jobId);
+            }
+            else {
+            	System.out.println("이미 지원한 공고입니다.");
+            }
+
+            // 3. JSON 문자열로 변환
+            String updatedJson = objectMapper.writeValueAsString(jobIds);
+
+            // 4. DB에 업데이트
+            String updateSql = "UPDATE users SET applied_job_ids = ? WHERE id = ?";
+            pstmt = conn.prepareStatement(updateSql);
+            pstmt.setString(1, updatedJson);
+            pstmt.setInt(2, userId);
+
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0; // 업데이트 성공 여부 반환
+
+		} catch (SQLException | com.fasterxml.jackson.core.JsonProcessingException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Database error occurred while updating User applied info", e);
+		} finally {
+			DBConnection.close(conn, pstmt, null);
+		}
+	}
+
 	// user 삭제
 	public static boolean deleteUser(String email) {
 		Connection conn = null;
@@ -198,24 +248,25 @@ public class UserDAO {
 			DBConnection.close(conn, pstmt, null);
 		}
 	}
-	
-	/* 지원하기 버튼 누르면 user 테이블에 applied job에 job id 넣기
-	 * */
+
+	/*
+	 * 지원하기 버튼 누르면 user 테이블에 applied job에 job id 넣기
+	 */
 	// user applied job (update) SQL
 	public static boolean updateCompany(int userId, int jobId) throws SQLException {
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		
+
 		try {
 			conn = DBConnection.getConnection();
 			String sql = "UPDATE users SET applied_job_ids=? WHERE id = ?";
 			pstmt.setInt(1, jobId);
 			pstmt.setInt(2, userId);
 
-    	    if(pstmt.executeUpdate() != 0) {
-    	    	return true;
-    	    }
+			if (pstmt.executeUpdate() != 0) {
+				return true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw e;
@@ -224,50 +275,9 @@ public class UserDAO {
 		}
 		return false;
 	}
-	
 
-	/*
 	public static void main(String[] args) {
-		// 1️⃣ 회원가입 테스트
-		// 1️⃣ 회원가입 테스트
-		User newUser = User.builder().name("홍길동").phone("010-1234-5678").birthDate(Date.valueOf("1990-05-20"))
-				.email("test@example.com") // ✅ 동일한 이메일이 있으면 가입 실패 (중복 체크)
-				.password("securepassword123") // ✅ 비밀번호 추가
-				.gender("M").experience("3년").preferredLocation(Arrays.asList("서울", "경기"))
-				.preferredSchedule(Arrays.asList("주말", "야간")).preferredJobCategory(Arrays.asList("배달", "청소"))
-				.appliedJobIds(Arrays.asList(1, 2, 3)).additionalInfo("성실하게 일하겠습니다!").build();
-
-		boolean isSignedUp = UserDAO.userSign(newUser);
-		System.out.println("✅ 회원가입 결과: " + (isSignedUp ? "성공" : "실패"));
-
-		// 2️⃣ 회원 정보 조회 (비밀번호 추가하여 올바른 호출)
-		User fetchedUser = UserDAO.getUserLoginInfo("test@example.com", "securepassword123");
-
-		if (fetchedUser != null) {
-			System.out.println("🔍 회원 정보 조회 성공: " + fetchedUser.getName() + " / " + fetchedUser.getEmail());
-		} else {
-			System.out.println("❌ 회원이 존재하지 않습니다.");
-		}
-
-		// 3️⃣ 회원 삭제 테스트 (이메일 기반 ID 조회 후 삭제)
-		User fetchedUserForDelete = UserDAO.getUserLoginInfo("test@example.com", "securepassword123");
-
-		if (fetchedUserForDelete != null) {
-			boolean isDeleted = UserDAO.deleteUser(fetchedUserForDelete.getEmail()); // ✅ ID로 삭제
-			System.out.println("🗑 회원 삭제 결과: " + (isDeleted ? "성공" : "실패"));
-		} else {
-			System.out.println("❌ 삭제할 회원이 존재하지 않습니다.");
-		}
-
-		// 4️⃣ 삭제 후 회원 조회 확인
-		User afterDeleteUser = UserDAO.getUserLoginInfo("test@example.com", "securepassword123");
-
-		if (afterDeleteUser == null) {
-			System.out.println("✅ 회원 삭제 확인 완료: 해당 회원이 더 이상 존재하지 않습니다.");
-		} else {
-			System.out.println("❌ 회원 삭제 실패: 여전히 회원이 존재합니다.");
-		}
-	}
-	*/
+        
+    }
 
 }
