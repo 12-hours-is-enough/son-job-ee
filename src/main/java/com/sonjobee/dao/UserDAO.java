@@ -19,11 +19,11 @@ public class UserDAO {
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
 	// 특정 User 정보 전체 정보 가져오기 - 마이페이지
-	public static List<User> getUserInfo(String email) {
+	public static User getUserInfo(String email) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List<User> users = new ArrayList<>();
+		User user = null;
 
 		try {
 			conn = DBConnection.getConnection();
@@ -32,7 +32,7 @@ public class UserDAO {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				User user = new User();
+				user = new User();
 				user.setId(rs.getInt("id"));
 				user.setName(rs.getString("name"));
 				user.setPhone(rs.getString("phone"));
@@ -48,8 +48,6 @@ public class UserDAO {
 				user.setAdditionalInfo(rs.getString("additional_info"));
 				user.setCreatedAt(rs.getTimestamp("created_at"));
 				user.setUpdatedAt(rs.getTimestamp("updated_at"));
-
-				users.add(user);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -57,7 +55,7 @@ public class UserDAO {
 		} finally {
 			DBConnection.close(conn, pstmt, rs);
 		}
-		return users;
+		return user;
 	}
 
 	// 로그인을 위한 email, 비밀번호 확인 
@@ -80,19 +78,6 @@ public class UserDAO {
 				if (storedPassword.equals(inputPassword)) {
 					user = new User();
 					user.setId(rs.getInt("id"));
-					user.setName(rs.getString("name"));
-					user.setPhone(rs.getString("phone"));
-					user.setBirthDate(rs.getDate("birth_date"));
-					user.setEmail(rs.getString("email"));
-					user.setGender(rs.getString("gender"));
-					user.setExperience(rs.getString("experience"));
-					user.setPreferredLocation(User.convertJsonToList(rs.getString("preferred_location")));
-					user.setPreferredSchedule(User.convertJsonToList(rs.getString("preferred_schedule")));
-					user.setPreferredJobCategory(User.convertJsonToList(rs.getString("preferred_job_category")));
-					user.setAppliedJobIds(User.convertJsonToIntegerList(rs.getString("applied_job_ids")));
-					user.setAdditionalInfo(rs.getString("additional_info"));
-					user.setCreatedAt(rs.getTimestamp("created_at"));
-					user.setUpdatedAt(rs.getTimestamp("updated_at"));
 					System.out.println("⭕ 로그인 성공");
 				} else {
 					System.out.println("❌ 비밀번호가 일치하지 않습니다.");
