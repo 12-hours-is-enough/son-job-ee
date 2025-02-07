@@ -77,19 +77,6 @@ public class UserDAO {
 				if (storedPassword.equals(inputPassword)) {
 					user = new User();
 					user.setId(rs.getInt("id"));
-					user.setName(rs.getString("name"));
-					user.setPhone(rs.getString("phone"));
-					user.setBirthDate(rs.getDate("birth_date"));
-					user.setEmail(rs.getString("email"));
-					user.setGender(rs.getString("gender"));
-					user.setExperience(rs.getString("experience"));
-					user.setPreferredLocation(User.convertJsonToList(rs.getString("preferred_location")));
-					user.setPreferredSchedule(User.convertJsonToList(rs.getString("preferred_schedule")));
-					user.setPreferredJobCategory(User.convertJsonToList(rs.getString("preferred_job_category")));
-					user.setAppliedJobIds(User.convertJsonToIntegerList(rs.getString("applied_job_ids")));
-					user.setAdditionalInfo(rs.getString("additional_info"));
-					user.setCreatedAt(rs.getTimestamp("created_at"));
-					user.setUpdatedAt(rs.getTimestamp("updated_at"));
 					System.out.println("⭕ 로그인 성공");
 				} else {
 					System.out.println("❌ 비밀번호가 일치하지 않습니다.");
