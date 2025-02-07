@@ -18,8 +18,8 @@ public class UserDAO {
 
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
-	// 특정 User 정보 전체 정보 가져오기 - 마이페이지
-	public static User getUserInfo(String email) {
+	// 특정 User 정보 전체 정보 가져오기 - 마이페이지 (session에 있는 id로 가져옴)
+	public static User getUserInfo(int userId) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -27,8 +27,8 @@ public class UserDAO {
 
 		try {
 			conn = DBConnection.getConnection();
-			pstmt = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
-			pstmt.setString(1, email);
+			pstmt = conn.prepareStatement("SELECT * FROM users WHERE id = ?");
+			pstmt.setInt(1, userId);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {

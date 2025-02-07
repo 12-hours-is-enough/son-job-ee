@@ -48,7 +48,7 @@ public class CompanyDAO {
 		return companies;
 	}
 
-	// select one company info - verifying password
+	// select one company info - verifying password & Company page
 	public Company getOneCompany(int companyId) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;

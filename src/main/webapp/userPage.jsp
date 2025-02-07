@@ -1,4 +1,20 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@page import="com.sonjobee.dao.UserDAO"%>
+<%@page import="com.sonjobee.model.User"%>
+
+
+<%
+	//세션에서 로그인된 사용자의 ID 가져오기
+	Integer userId = (Integer) session.getAttribute("id");
+	// Integer userId = 1;
+	
+	// 유저 정보 가져오기
+	User user = null;
+	if (userId != null) {
+	    user = UserDAO.getUserInfo(userId);
+	}
+%>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -134,44 +150,48 @@
     <!-- 메인 컨텐츠 -->
     <div class="content">
         <h2 class="title">▶ 마이페이지</h2>
-
+		
         <form action="userUpdateProcess.jsp" method="post" class="form-container">
             <div class="form-group">
-                <label for="userId">아이디</label>
-                <input type="text" class="input-box" id="userId" name="userId" placeholder="사용자 아이디" value="hong123" required>
+                <label for="userEmail">이메일</label>
+                <input type="email" class="input-box" id="userEmail" name="userEmail" 
+                       placeholder="이메일" value="<%= (user != null) ? user.getEmail() : "" %>" readonly>
             </div>
             <div class="form-group">
                 <label for="userPw">비밀번호</label>
-                <input type="password" class="input-box" id="userPw" name="userPw" placeholder="비밀번호" value="password" required>
+                <input type="password" class="input-box" id="userPw" name="userPw" 
+                       placeholder="비밀번호" value="<%= (user != null) ? user.getPassword() : "" %>" required>
             </div>
             <div class="form-group">
                 <label for="userName">이름</label>
-                <input type="text" class="input-box" id="userName" name="userName" placeholder="이름" value="홍길동" required>
-            </div>
-            <div class="form-group">
-                <label for="userEmail">이메일</label>
-                <input type="email" class="input-box" id="userEmail" name="userEmail" placeholder="이메일" value="hong@email.com" required>
+                <input type="text" class="input-box" id="userName" name="userName" 
+                       placeholder="이름" value="<%= (user != null) ? user.getName() : "" %>" required>
             </div>
             <div class="form-group">
                 <label for="userPhone">전화번호</label>
-                <input type="text" class="input-box" id="userPhone" name="userPhone" placeholder="전화번호" value="010-1234-5678" required>
+                <input type="text" class="input-box" id="userPhone" name="userPhone" 
+                       placeholder="전화번호" value="<%= (user != null) ? user.getPhone() : "" %>" required>
             </div>
             <div class="form-group">
                 <label for="userBirth">생년월일</label>
-                <input type="date" class="input-box" id="userBirth" name="userBirth" value="1990-01-01" required>
+                <input type="date" class="input-box" id="userBirth" name="userBirth" 
+                       value="<%= (user != null) ? user.getBirthDate() : "" %>" required>
             </div>
 
-            <div class="form-group">
+            <div class="form-group"> 
                 <label>성별</label>
                 <div class="radio-group">
-                    <label><input type="radio" name="userGender" value="female"> 여자</label>
-                    <label><input type="radio" name="userGender" value="male" checked> 남자</label>
+                    <label><input type="radio" name="userGender" value="female" 
+                                  <%= (user != null && "female".equals(user.getGender())) ? "checked" : "" %> > 여자</label>
+                    <label><input type="radio" name="userGender" value="male" 
+                                  <%= (user != null && "male".equals(user.getGender())) ? "checked" : "" %> > 남자</label>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="userExperience">경력사항</label>
-                <textarea class="input-box" id="userExperience" name="userExperience" placeholder="경력사항">5년 경력 개발자</textarea>
+                <textarea class="input-box" id="userExperience" name="userExperience"
+                          placeholder="경력사항"><%= (user != null) ? user.getExperience() : "" %></textarea>
             </div>
 
             <button type="submit" class="btn">수정</button>
