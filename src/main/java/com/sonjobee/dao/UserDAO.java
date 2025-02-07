@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -143,7 +142,7 @@ public class UserDAO {
 	        pstmt = conn.prepareStatement(sql);
 	        pstmt.setString(1, user.getName());
 	        pstmt.setString(2, user.getPhone());
-	        pstmt.setDate(3, user.getBirthDate());
+	        pstmt.setDate(3, new Date(user.getBirthDate().getTime()));
 	        pstmt.setString(4, user.getEmail());
 	        pstmt.setString(5, user.getPassword());
 	        pstmt.setString(6, user.getGender());
@@ -172,20 +171,21 @@ public class UserDAO {
 
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "UPDATE users SET name = ?, phone = ?, birth_date = ?, gender = ?, experience = ?, "
+			String sql = "UPDATE users SET name = ?, phone = ?, birth_date = ?, password = ?, gender = ?, experience = ?, "
 					+ "preferred_location = ?, preferred_schedule = ?, preferred_job_category = ?, additional_info = ?, updated_at = NOW() "
 					+ "WHERE id = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userDto.getName());
 			pstmt.setString(2, userDto.getPhone());
-			pstmt.setDate(3, userDto.getBirthDate());
-			pstmt.setString(4, userDto.getGender());
-			pstmt.setString(5, userDto.getExperience());
-			pstmt.setString(6, objectMapper.writeValueAsString(userDto.getPreferredLocation())); // JSON 변환
-			pstmt.setString(7, objectMapper.writeValueAsString(userDto.getPreferredSchedule()));
-			pstmt.setString(8, objectMapper.writeValueAsString(userDto.getPreferredJobCategory()));
-			pstmt.setString(9, userDto.getAdditionalInfo());
-			pstmt.setInt(10, userId);
+			pstmt.setDate(3, new Date(userDto.getBirthDate().getTime()));
+			pstmt.setString(4, userDto.getPassword());
+			pstmt.setString(5, userDto.getGender());
+			pstmt.setString(6, userDto.getExperience());
+			pstmt.setString(7, objectMapper.writeValueAsString(userDto.getPreferredLocation())); // JSON 변환
+			pstmt.setString(8, objectMapper.writeValueAsString(userDto.getPreferredSchedule()));
+			pstmt.setString(9, objectMapper.writeValueAsString(userDto.getPreferredJobCategory()));
+			pstmt.setString(10, userDto.getAdditionalInfo());
+			pstmt.setInt(11, userId);
 
 			int rowsAffected = pstmt.executeUpdate();
 			return rowsAffected > 0; // 성공 시 true 반환
@@ -199,7 +199,7 @@ public class UserDAO {
 	}
 
 	// user 삭제
-	public static boolean deleteUser(int email) {
+	public static boolean deleteUser(String email) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -207,7 +207,7 @@ public class UserDAO {
 			conn = DBConnection.getConnection();
 			String sql = "DELETE FROM users WHERE email = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, email);
+			pstmt.setString(1, email);
 
 			int rowsAffected = pstmt.executeUpdate();
 			return rowsAffected > 0; // 성공적으로 삭제되면 true 반환
