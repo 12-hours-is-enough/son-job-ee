@@ -4,12 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=42dot+Sans:wght@300..800&family=Noto+Sans+KR:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	
     <title>공고 업로드</title>
     <style>
         body {
             display: flex;
             margin: 0;
-            font-family: Arial, sans-serif;
+		    font-family: "Noto Sans KR", serif;
+		    font-optical-sizing: auto;
+		    font-weight: 500;
+		    font-style: normal;
             background-color: #f8f8f8;
         }
 
@@ -110,10 +117,10 @@
 
     <!-- 사이드바 -->
     <div class="sidebar">
-        <h2>⚙ Son-jab-ee</h2>
+        <h2 onclick="location.href='uploadPost.jsp'">⚙ Son-jab-ee</h2>
         <a href="uploadPost.jsp" class="nav-item active">공고 업로드</a>
-        <a href="postedJobs.jsp" class="nav-item">올린 공고</a>
-        <a href="userPage.jsp" class="nav-item">마이 페이지</a>
+        <a href="myPosts.jsp" class="nav-item">올린 공고</a>
+        <a href="companyPage.jsp" class="nav-item">마이 페이지</a>
         <a href="logout.jsp">로그아웃</a>
         <div class="user-info">구인자 🏢 해바라기 학원님</div>
     </div>

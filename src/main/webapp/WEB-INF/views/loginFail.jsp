@@ -115,7 +115,13 @@
 </head>
 <body>
     <div class="login-container">
+    
+        <p id="loginError" style="color: red;">
+		    * 로그인에 실패했습니다. *
+		</p>
+		        
         <h2>로그인</h2>
+        
         
         <!-- login button 누르면 email, pw, usertype 넘기기 (/login 에 post로 넘길거임) -->
         
@@ -136,7 +142,6 @@
             <button type="submit" class="login-btn">log in</button> 
         </form>
         <a href="signup" class="signup-link">회원가입</a>
-        <a href="jobList.jsp" class="signup-link">job list</a>
     </div>
 </body>
 </html>

@@ -56,30 +56,31 @@
         /* 입력 필드 */
         .form-group {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             margin-bottom: 10px;
             width: 100%;
+            max-width: 350px; /* 폼 전체 너비 */
         }
 
-        .form-group label {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 5px;
-            display: block;
-            text-align: left;
-            width: 100%;
-            max-width: 300px;
-        }
-
-        .input-box {
-            width: 300px;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background-color: #f0f0f0;
-            font-size: 16px;
-        }
+		
+		.form-group label {
+		    font-size: 16px;
+		    font-weight: bold;
+		    margin-right: 10px; /* 오른쪽 여백 줄임 */
+		    white-space: nowrap; /* 텍스트가 줄 바뀌지 않도록 설정 */
+		}
+		
+		.input-box {
+		    flex: 1; /* 입력 필드가 남은 공간을 차지하도록 설정 */
+		    padding: 12px;
+		    border: none;
+		    border-radius: 8px;
+		    background-color: #f0f0f0;
+		    font-size: 16px;
+		    width: 100%; /* 부모 요소 크기에 맞춰 확장 */
+		    max-width: 100%; /* 폼 너비에 맞춰 자동 확장 */
+		}
 
         /* 로그인 버튼 */
         .login-btn {
@@ -115,22 +116,27 @@
 <body>
     <div class="login-container">
         <h2>로그인</h2>
-        <form action="loginProcess.jsp" method="post">
+        
+        <!-- login button 누르면 email, pw, usertype 넘기기 (/login 에 post로 넘길거임) -->
+        
+        <form action="login" method="post">
             <div class="radio-group">
-                <label><input type="radio" name="userType" value="employer" required> 구인자</label>
-                <label><input type="radio" name="userType" value="jobseeker" required> 구직자</label>
+                <label><input type="radio" name="userType" value="user" required> 구인자</label>
+                <label><input type="radio" name="userType" value="company" required> 구직자</label>
             </div>
             <div class="form-group">
-                <label for="userId">ID</label>
+                <label for="userId">ID &nbsp;</label>
                 <input type="text" id="userId" name="userId" class="input-box" required>
             </div>
             <div class="form-group">
                 <label for="userPw">PW</label>
                 <input type="password" id="userPw" name="userPw" class="input-box" required>
             </div>
-            <button type="submit" class="login-btn">log in</button>
+            
+            <button type="submit" class="login-btn">log in</button> 
         </form>
-        <a href="userSignup.jsp" class="signup-link">회원가입</a>
+        <a href="signup" class="signup-link">회원가입</a>
+        <a href="jobList.jsp" class="signup-link">job list</a>
     </div>
 </body>
 </html>

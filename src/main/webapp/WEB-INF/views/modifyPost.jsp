@@ -4,12 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=42dot+Sans:wght@300..800&family=Noto+Sans+KR:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	
     <title>공고 수정</title>
     <style>
         body {
             display: flex;
             margin: 0;
-            font-family: Arial, sans-serif;
+		    font-family: "Noto Sans KR", serif;
+		    font-optical-sizing: auto;
+		    font-weight: 500;
+		    font-style: normal;
             background-color: #f8f8f8;
         }
 
@@ -110,9 +117,9 @@
 
     <!-- 사이드바 -->
     <div class="sidebar">
-        <h2>⚙ Son-jab-ee</h2>
+        <h2 onclick="location.href='jobList.jsp'">⚙ Son-jab-ee</h2>
         <a href="uploadPost.jsp" class="nav-item">공고 업로드</a>
-        <a href="myPosts.jsp" class="nav-item active">올린 공고</a>
+        <a href="myPosts.jsp" class="nav-item">올린 공고</a>
         <a href="companyPage.jsp" class="nav-item">마이 페이지</a>
         <a href="logout.jsp">로그아웃</a>
         <div class="user-info">구인자 🏢 해바라기 학원님</div>
@@ -122,44 +129,36 @@
     <div class="content">
         <h2 class="title">▶ 공고 수정</h2>
 
-        <form action="modifyPostProcess.jsp" method="post" class="form-container">
-            <!-- 공고 ID (수정 시 필요) -->
+        <form action="updatePostProcess.jsp" method="post" class="form-container">
             <input type="hidden" name="postId" value="<%= request.getParameter("postId") %>">
 
             <div class="form-group">
                 <label for="companyName">회사 이름</label>
-                <input type="text" class="input-box" id="companyName" name="companyName" 
-                       value="<%= request.getParameter("companyName") %>" required>
+                <input type="text" class="input-box" id="companyName" name="companyName" required value="해바라기 학원">
             </div>
             <div class="form-group">
                 <label for="jobTitle">공고 제목</label>
-                <input type="text" class="input-box" id="jobTitle" name="jobTitle" 
-                       value="<%= request.getParameter("jobTitle") %>" required>
+                <input type="text" class="input-box" id="jobTitle" name="jobTitle" required value="운전 기사 구합니다.">
             </div>
             <div class="form-group">
                 <label for="jobDescription">공고 내용</label>
-                <input type="text" class="input-box" id="jobDescription" name="jobDescription" 
-                       value="<%= request.getParameter("jobDescription") %>" required>
+                <input type="text" class="input-box" id="jobDescription" name="jobDescription" required value="운전 업무 가능자 모집">
             </div>
             <div class="form-group">
                 <label for="jobType">업무 유형</label>
-                <input type="text" class="input-box" id="jobType" name="jobType" 
-                       value="<%= request.getParameter("jobType") %>" required>
+                <input type="text" class="input-box" id="jobType" name="jobType" required value="운전">
             </div>
             <div class="form-group">
                 <label for="salary">급여</label>
-                <input type="text" class="input-box" id="salary" name="salary" 
-                       value="<%= request.getParameter("salary") %>" required>
+                <input type="text" class="input-box" id="salary" name="salary" required value="월 300만원">
             </div>
             <div class="form-group">
                 <label for="location">지역</label>
-                <input type="text" class="input-box" id="location" name="location" 
-                       value="<%= request.getParameter("location") %>" required>
+                <input type="text" class="input-box" id="location" name="location" required value="서울">
             </div>
             <div class="form-group">
                 <label for="priority">우대사항</label>
-                <input type="text" class="input-box" id="priority" name="priority" 
-                       value="<%= request.getParameter("priority") %>">
+                <input type="text" class="input-box" id="priority" name="priority" value="경력자 우대">
             </div>
 
             <button type="submit" class="btn">공고 수정</button>

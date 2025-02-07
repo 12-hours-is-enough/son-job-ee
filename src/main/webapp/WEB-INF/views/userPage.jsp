@@ -123,7 +123,7 @@
 
     <!-- 사이드바 -->
     <div class="sidebar">
-        <h2>⚙ Son-jab-ee</h2>
+        <h2 onclick="location.href='jobList.jsp'">⚙ Son-jab-ee</h2>
         <a href="jobList.jsp" class="nav-item">공고 리스트</a>
         <a href="myStatus.jsp" class="nav-item">지원 현황</a>
         <a href="userPage.jsp" class="nav-item active">마이 페이지</a>
