@@ -4,16 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=42dot+Sans:wght@300..800&family=Noto+Sans+KR:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
-    
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=42dot+Sans:wght@300..800&family=Noto+Sans+KR:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	
     <title>마이 페이지</title>
     <style>
         body {
             display: flex;
             margin: 0;
-            font-family: "Noto Sans KR", sans-serif;
+		    font-family: "Noto Sans KR", serif;
+		    font-optical-sizing: auto;
+		    font-weight: 500;
+		    font-style: normal;
             background-color: #f8f8f8;
         }
 
@@ -24,9 +27,6 @@
             padding: 20px;
             height: 100vh;
             box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            left: 0;
-            top: 0;
         }
 
         .sidebar h2 {
@@ -62,8 +62,7 @@
             padding: 30px;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            margin-left: 220px;
+            align-items: flex-start; /* 제목을 왼쪽 정렬 */
         }
 
         .title {
@@ -78,18 +77,15 @@
 
         /* 입력 폼 스타일 */
         .form-container {
-            width: 100%;
-            max-width: 400px;
+            width: 350px;
             display: flex;
             flex-direction: column;
-            align-items: center;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
             margin-bottom: 10px;
-            width: 100%;
         }
 
         .form-group label {
@@ -123,59 +119,46 @@
 
     <!-- 사이드바 -->
     <div class="sidebar">
-<<<<<<< Updated upstream
-        <h2>⚙ Son-jab-ee</h2>
-=======
         <h2 onclick="location.href='jobList.jsp'">⚙ Son-jab-ee</h2>
->>>>>>> Stashed changes
-        <a href="jobList.jsp" class="nav-item">공고 리스트</a>
-        <a href="myStatus.jsp" class="nav-item">지원 현황</a>
-        <a href="userPage.jsp" class="nav-item active">마이 페이지</a>
+        <a href="uploadPost.jsp" class="nav-item">공고 업로드</a>
+        <a href="myPosts.jsp" class="nav-item">올린 공고</a>
+        <a href="companyPage.jsp" class="nav-item active">마이 페이지</a>
         <a href="logout.jsp">로그아웃</a>
-        <div class="user-info">구직자 🟢 홍길동님</div>
+        <div class="user-info">구인자 🏢 해바라기 학원님</div>
     </div>
 
     <!-- 메인 컨텐츠 -->
     <div class="content">
         <h2 class="title">▶ 마이페이지</h2>
 
-        <form action="userUpdateProcess.jsp" method="post" class="form-container">
+        <form action="companyUpdateProcess.jsp" method="post" class="form-container">
             <div class="form-group">
-                <label for="userId">아이디</label>
-                <input type="text" class="input-box" id="userId" name="userId" placeholder="사용자 아이디" value="hong123" required>
+                <label for="companyId">아이디</label>
+                <input type="text" class="input-box" id="companyId" name="companyId" placeholder="회사 아이디" value="company123" required>
             </div>
             <div class="form-group">
-                <label for="userPw">비밀번호</label>
-                <input type="password" class="input-box" id="userPw" name="userPw" placeholder="비밀번호" value="password" required>
+                <label for="companyPw">비밀번호</label>
+                <input type="password" class="input-box" id="companyPw" name="companyPw" placeholder="비밀번호" value="password" required>
             </div>
             <div class="form-group">
-                <label for="userName">이름</label>
-                <input type="text" class="input-box" id="userName" name="userName" placeholder="이름" value="홍길동" required>
+                <label for="companyName">회사 이름</label>
+                <input type="text" class="input-box" id="companyName" name="companyName" placeholder="회사 이름" value="해바라기 학원" required>
             </div>
             <div class="form-group">
-                <label for="userEmail">이메일</label>
-                <input type="email" class="input-box" id="userEmail" name="userEmail" placeholder="이메일" value="hong@email.com" required>
+                <label for="companyEmail">이메일</label>
+                <input type="email" class="input-box" id="companyEmail" name="companyEmail" placeholder="회사 이메일" value="company@email.com" required>
             </div>
             <div class="form-group">
-                <label for="userPhone">전화번호</label>
-                <input type="text" class="input-box" id="userPhone" name="userPhone" placeholder="전화번호" value="010-1234-5678" required>
+                <label for="companyPhone">전화번호</label>
+                <input type="text" class="input-box" id="companyPhone" name="companyPhone" placeholder="회사 전화번호" value="02-1234-5678" required>
             </div>
             <div class="form-group">
-                <label for="userBirth">생년월일</label>
-                <input type="date" class="input-box" id="userBirth" name="userBirth" value="1990-01-01" required>
+                <label for="companyAddress">주소</label>
+                <input type="text" class="input-box" id="companyAddress" name="companyAddress" placeholder="회사 주소" value="서울시 강남구" required>
             </div>
-
             <div class="form-group">
-                <label>성별</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="userGender" value="female"> 여자</label>
-                    <label><input type="radio" name="userGender" value="male" checked> 남자</label>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="userExperience">경력사항</label>
-                <textarea class="input-box" id="userExperience" name="userExperience" placeholder="경력사항">5년 경력 개발자</textarea>
+                <label for="companyDescription">회사 소개</label>
+                <textarea class="input-box" id="companyDescription" name="companyDescription" placeholder="회사 소개">국내 최고의 교육 기관</textarea>
             </div>
 
             <button type="submit" class="btn">수정</button>
