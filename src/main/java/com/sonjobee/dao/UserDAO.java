@@ -18,8 +18,8 @@ public class UserDAO {
 
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
-	// User 전체 정보 가져오기 - user 수정 시 + 삭제 시?
-	public static List<User> getUserInfo() {
+	// 특정 User 정보 전체 정보 가져오기 - 마이페이지
+	public static List<User> getUserInfo(String email) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -27,7 +27,8 @@ public class UserDAO {
 
 		try {
 			conn = DBConnection.getConnection();
-			pstmt = conn.prepareStatement("SELECT * FROM users");
+			pstmt = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
+			pstmt.setString(1, email);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -48,14 +49,6 @@ public class UserDAO {
 				user.setCreatedAt(rs.getTimestamp("created_at"));
 				user.setUpdatedAt(rs.getTimestamp("updated_at"));
 
-				// 디버깅을 위한 출력문 추가
-				System.out.println("User ID: " + user.getId());
-				System.out.println("Preferred Location: " + user.getPreferredLocation());
-				System.out.println("Preferred Schedule: " + user.getPreferredSchedule());
-				System.out.println("Preferred Job Category: " + user.getPreferredJobCategory());
-				System.out.println("Applied Job IDs: " + user.getAppliedJobIds());
-				System.out.println("------------------------------------");
-
 				users.add(user);
 			}
 		} catch (SQLException e) {
@@ -67,7 +60,7 @@ public class UserDAO {
 		return users;
 	}
 
-	// User 정보 가져오기 - 로그인 시 회원 정보 확인 + 삭제시 확인?
+	// 로그인을 위한 email, 비밀번호 확인 
 	public static User getUserLoginInfo(String email, String inputPassword) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -199,7 +192,7 @@ public class UserDAO {
 	}
 
 	// user 삭제
-	public static boolean deleteUser(int email) {
+	public static boolean deleteUser(String email) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -207,7 +200,7 @@ public class UserDAO {
 			conn = DBConnection.getConnection();
 			String sql = "DELETE FROM users WHERE email = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, email);
+			pstmt.setString(1, email);
 
 			int rowsAffected = pstmt.executeUpdate();
 			return rowsAffected > 0; // 성공적으로 삭제되면 true 반환
@@ -220,46 +213,48 @@ public class UserDAO {
 		}
 	}
 
-//	public static void main(String[] args) {
-//		// 1️⃣ 회원가입 테스트
-//		// 1️⃣ 회원가입 테스트
-//		User newUser = User.builder().name("홍길동").phone("010-1234-5678").birthDate(Date.valueOf("1990-05-20"))
-//				.email("test@example.com") // ✅ 동일한 이메일이 있으면 가입 실패 (중복 체크)
-//				.password("securepassword123") // ✅ 비밀번호 추가
-//				.gender("남성").experience("3년").preferredLocation(Arrays.asList("서울", "경기"))
-//				.preferredSchedule(Arrays.asList("주말", "야간")).preferredJobCategory(Arrays.asList("배달", "청소"))
-//				.appliedJobIds(Arrays.asList(1, 2, 3)).additionalInfo("성실하게 일하겠습니다!").build();
-//
-//		boolean isSignedUp = UserDAO.userSign(newUser);
-//		System.out.println("✅ 회원가입 결과: " + (isSignedUp ? "성공" : "실패"));
-//
-//		// 2️⃣ 회원 정보 조회 (비밀번호 추가하여 올바른 호출)
-//		User fetchedUser = UserDAO.getUserLoginInfo("test@example.com", "securepassword123");
-//
-//		if (fetchedUser != null) {
-//			System.out.println("🔍 회원 정보 조회 성공: " + fetchedUser.getName() + " / " + fetchedUser.getEmail());
-//		} else {
-//			System.out.println("❌ 회원이 존재하지 않습니다.");
-//		}
-//
-//		// 3️⃣ 회원 삭제 테스트 (이메일 기반 ID 조회 후 삭제)
-//		User fetchedUserForDelete = UserDAO.getUserLoginInfo("test@example.com", "securepassword123");
-//
-//		if (fetchedUserForDelete != null) {
-//			boolean isDeleted = UserDAO.deleteUser(fetchedUserForDelete.getId()); // ✅ ID로 삭제
-//			System.out.println("🗑 회원 삭제 결과: " + (isDeleted ? "성공" : "실패"));
-//		} else {
-//			System.out.println("❌ 삭제할 회원이 존재하지 않습니다.");
-//		}
-//
-//		// 4️⃣ 삭제 후 회원 조회 확인
-//		User afterDeleteUser = UserDAO.getUserLoginInfo("test@example.com", "securepassword123");
-//
-//		if (afterDeleteUser == null) {
-//			System.out.println("✅ 회원 삭제 확인 완료: 해당 회원이 더 이상 존재하지 않습니다.");
-//		} else {
-//			System.out.println("❌ 회원 삭제 실패: 여전히 회원이 존재합니다.");
-//		}
-//	}
+	/*
+	public static void main(String[] args) {
+		// 1️⃣ 회원가입 테스트
+		// 1️⃣ 회원가입 테스트
+		User newUser = User.builder().name("홍길동").phone("010-1234-5678").birthDate(Date.valueOf("1990-05-20"))
+				.email("test@example.com") // ✅ 동일한 이메일이 있으면 가입 실패 (중복 체크)
+				.password("securepassword123") // ✅ 비밀번호 추가
+				.gender("M").experience("3년").preferredLocation(Arrays.asList("서울", "경기"))
+				.preferredSchedule(Arrays.asList("주말", "야간")).preferredJobCategory(Arrays.asList("배달", "청소"))
+				.appliedJobIds(Arrays.asList(1, 2, 3)).additionalInfo("성실하게 일하겠습니다!").build();
+
+		boolean isSignedUp = UserDAO.userSign(newUser);
+		System.out.println("✅ 회원가입 결과: " + (isSignedUp ? "성공" : "실패"));
+
+		// 2️⃣ 회원 정보 조회 (비밀번호 추가하여 올바른 호출)
+		User fetchedUser = UserDAO.getUserLoginInfo("test@example.com", "securepassword123");
+
+		if (fetchedUser != null) {
+			System.out.println("🔍 회원 정보 조회 성공: " + fetchedUser.getName() + " / " + fetchedUser.getEmail());
+		} else {
+			System.out.println("❌ 회원이 존재하지 않습니다.");
+		}
+
+		// 3️⃣ 회원 삭제 테스트 (이메일 기반 ID 조회 후 삭제)
+		User fetchedUserForDelete = UserDAO.getUserLoginInfo("test@example.com", "securepassword123");
+
+		if (fetchedUserForDelete != null) {
+			boolean isDeleted = UserDAO.deleteUser(fetchedUserForDelete.getEmail()); // ✅ ID로 삭제
+			System.out.println("🗑 회원 삭제 결과: " + (isDeleted ? "성공" : "실패"));
+		} else {
+			System.out.println("❌ 삭제할 회원이 존재하지 않습니다.");
+		}
+
+		// 4️⃣ 삭제 후 회원 조회 확인
+		User afterDeleteUser = UserDAO.getUserLoginInfo("test@example.com", "securepassword123");
+
+		if (afterDeleteUser == null) {
+			System.out.println("✅ 회원 삭제 확인 완료: 해당 회원이 더 이상 존재하지 않습니다.");
+		} else {
+			System.out.println("❌ 회원 삭제 실패: 여전히 회원이 존재합니다.");
+		}
+	}
+	*/
 
 }
