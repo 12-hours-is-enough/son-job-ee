@@ -132,6 +132,7 @@
             <button type="submit" class="login-btn">log in</button>
         </form>
         <a href="userSignup.jsp" class="signup-link">회원가입</a>
+         <a href="jobList.jsp" class="signup-link">job list</a>
     </div>
 </body>
 </html>

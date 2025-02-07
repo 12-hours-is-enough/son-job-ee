@@ -117,7 +117,7 @@
 
     <!-- 사이드바 -->
     <div class="sidebar">
-        <h2 onclick="location.href='jobList.jsp'">⚙ Son-jab-ee</h2>
+        <h2 onclick="location.href='uploadPost.jsp'">⚙ Son-jab-ee</h2>
         <a href="uploadPost.jsp" class="nav-item active">공고 업로드</a>
         <a href="myPosts.jsp" class="nav-item">올린 공고</a>
         <a href="companyPage.jsp" class="nav-item">마이 페이지</a>
