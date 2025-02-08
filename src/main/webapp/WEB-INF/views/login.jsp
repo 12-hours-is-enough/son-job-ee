@@ -121,8 +121,8 @@
         
         <form action="login" method="post">
             <div class="radio-group">
-                <label><input type="radio" name="userType" value="user" required> 구인자</label>
-                <label><input type="radio" name="userType" value="company" required> 구직자</label>
+                <label><input type="radio" name="userType" value="company" required> 구인자</label>
+                <label><input type="radio" name="userType" value="user" required> 구직자</label>
             </div>
             <div class="form-group">
                 <label for="userId">ID &nbsp;</label>
@@ -137,6 +137,13 @@
         </form>
         <a href="signup" class="signup-link">회원가입</a>
         <a href="jobList.jsp" class="signup-link">job list</a>
+        
+    	<form action="signup" method="get" id="signupForm" style="display:none;">	
+        	<input type="hidden" name="userType" id="userTypeHidden">
+    	</form>
     </div>
+    
+    <script src="assets/js/script.js"></script>
+    
 </body>
 </html>

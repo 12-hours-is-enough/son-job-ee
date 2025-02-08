@@ -87,6 +87,7 @@ public class CompanyDAO {
 		PreparedStatement pstmt = null;
 		
 		try {
+<<<<<<< Updated upstream
         	conn = DBConnection.getConnection();
         	pstmt = conn.prepareStatement("INSERT INTO  (name, phone, email, password, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)");
 			
@@ -105,6 +106,20 @@ public class CompanyDAO {
     	    if(pstmt.executeUpdate() != 0) {
     	    	return true;
     	    }
+=======
+			conn = DBConnection.getConnection();
+			pstmt = conn.prepareStatement(
+					"INSERT INTO companies (name, phone, email, password, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
+
+			pstmt.setString(1, co.getName());
+			pstmt.setString(2, co.getPhone());
+			pstmt.setString(3, co.getEmail());
+			pstmt.setString(4, co.getPassword());
+
+			if (pstmt.executeUpdate() != 0) {
+				return true;
+			}
+>>>>>>> Stashed changes
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw e;
@@ -121,7 +136,12 @@ public class CompanyDAO {
 		
 		try {
 			conn = DBConnection.getConnection();
+<<<<<<< Updated upstream
 			pstmt = conn.prepareStatement("UPDATE company SET name=?, phone=?, email=?, password=?, updated_at=? WHERE id=?");
+=======
+			pstmt = conn.prepareStatement(
+					"UPDATE companies SET name=?, phone=?, email=?, password=?, updated_at=? WHERE id=?");
+>>>>>>> Stashed changes
 
 			pstmt.setString(1, co.getName());   
 		    pstmt.setString(2, co.getPhone());   
