@@ -88,19 +88,12 @@ public class CompanyDAO {
 		try {
 			conn = DBConnection.getConnection();
 			pstmt = conn.prepareStatement(
-					"INSERT INTO  (name, phone, email, password, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)");
+					"INSERT INTO companies (name, phone, email, password, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
 
 			pstmt.setString(1, co.getName());
 			pstmt.setString(2, co.getPhone());
 			pstmt.setString(3, co.getEmail());
 			pstmt.setString(4, co.getPassword());
-
-			// getTime() 메서드를 사용하여 java.util.Date 객체의 시간을 밀리초 단위로 얻고 이를 java.sql.Date 객체로 변환
-			java.sql.Date sqlCreatedAt = new java.sql.Date(co.getCreatedAt().getTime());
-			pstmt.setDate(5, sqlCreatedAt);
-
-			java.sql.Date sqlUpdatedAt = new java.sql.Date(co.getUpdatedAt().getTime());
-			pstmt.setDate(6, sqlUpdatedAt);
 
 			if (pstmt.executeUpdate() != 0) {
 				return true;
@@ -122,13 +115,12 @@ public class CompanyDAO {
 		try {
 			conn = DBConnection.getConnection();
 			pstmt = conn.prepareStatement(
-					"UPDATE company SET name=?, phone=?, email=?, password=?, updated_at=? WHERE id=?");
+					"UPDATE companies SET name=?, phone=?, email=?, password=?, updated_at=NOW() WHERE id=?");
 
 			pstmt.setString(1, co.getName());
 			pstmt.setString(2, co.getPhone());
 			pstmt.setString(3, co.getEmail());
 			pstmt.setString(4, co.getPassword());
-			pstmt.setDate(5, new java.sql.Date(co.getUpdatedAt().getTime()));
 			pstmt.setInt(6, co.getId());
 
 			if (pstmt.executeUpdate() != 0) {

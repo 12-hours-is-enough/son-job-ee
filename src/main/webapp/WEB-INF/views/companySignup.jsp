@@ -48,9 +48,9 @@
     <div class="signup-container">
         <h2>구인자 회원가입</h2>
         <form action="signup?usertype=company" method="post">
+        	<input type="email" class="input-box" name="companyEmail" placeholder="이메일 (아이디)" required>	
             <input type="text" class="input-box" name="companyName" placeholder="회사 이름" required>
             <input type="text" class="input-box" name="companyPhone" placeholder="회사 전화번호" required>
-            <input type="email" class="input-box" name="companyEmail" placeholder="이메일 (아이디)" required>
             <input type="password" class="input-box" name="companyPw" placeholder="비밀번호" required>
             <button type="submit" class="btn">회원가입</button>
         </form>

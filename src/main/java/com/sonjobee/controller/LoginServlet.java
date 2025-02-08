@@ -30,10 +30,11 @@ public class LoginServlet extends HttpServlet {
 	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		if (session.getAttribute("islogin") != null && session.getAttribute("islogin") == "true") {
-			request.getRequestDispatcher("/WEB-INF/views/jobList.jsp").forward(request, response);
+		if (session.getAttribute("islogin") != null) {
+			response.sendRedirect("job");
+		} else {
+			request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
 		}
-		request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
     }
     
 	@Override
@@ -41,27 +42,27 @@ public class LoginServlet extends HttpServlet {
     	String userType = request.getParameter("userType");
     	HttpSession session = request.getSession();
     	String url = "job";
-    	System.out.println(userType);
-    	System.out.println(request.getParameter("userPw"));
-    	if (userType == "user") {
-    		User user = UserDAO.getUserLoginInfo(request.getParameter("email"), request.getParameter("password"));
+    	
+    	if (userType.equals("user")) {
+    		User user = UserDAO.getUserLoginInfo(request.getParameter("userId"), request.getParameter("userPw"));
     		if (user.getId() != null) {
     			session.setAttribute("usertype", "user");
     			session.setAttribute("id", user.getId());
     			session.setAttribute("islogin", "true");
+    			response.sendRedirect(url);
     		} else {
-    			url = "/WEB-INF/views/loginFail.jsp";
+    			request.getRequestDispatcher("/WEB-INF/views/loginFail.jsp").forward(request, response);
     		}
-    	} else if (userType == "company") {
-    		Company company = CompanyDAO.getCompanyLoginInfo(request.getParameter("email"), request.getParameter("password"));
+    	} else if (userType.equals("company")) {
+    		Company company = CompanyDAO.getCompanyLoginInfo(request.getParameter("userId"), request.getParameter("userPws"));
     		if (company.getId() != null) {
     			session.setAttribute("usertype", "company");
     			session.setAttribute("id", company.getId());    			
     			session.setAttribute("islogin", "true");
+    			response.sendRedirect(url);
     		} else {
-    			url = "/WEB-INF/views/loginFail.jsp";
+    			request.getRequestDispatcher("/WEB-INF/views/loginFail.jsp").forward(request, response);
     		}
     	} 
-		response.sendRedirect(url);
 	}
 }

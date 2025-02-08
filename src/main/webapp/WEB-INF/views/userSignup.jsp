@@ -84,9 +84,9 @@
         <form action="signup?usertype=user" method="post">
         
             <div class="form-group">
-           		<label for="userId">아이디 &nbsp;</label>
-            	<input type="text" class="input-box" name="userId" placeholder="아이디" required>
-           	</div>
+           		<label for="userId">이메일 &nbsp;</label>
+            	<input type="email" class="input-box" name="userEmail" placeholder="이메일 (아이디)" required>
+            </div>
            	
             <div class="form-group">
            		<label for="userId">비밀번호 &nbsp;</label>
@@ -97,12 +97,6 @@
             <div class="form-group">
            		<label for="userId">이름 &nbsp;</label>
             	<input type="text" class="input-box" name="userName" placeholder="이름" required>
-            </div>
-            
-            
-            <div class="form-group">
-           		<label for="userId">이메일 &nbsp;</label>
-            	<input type="email" class="input-box" name="userEmail" placeholder="이메일" required>
             </div>
             
             
@@ -119,13 +113,11 @@
             
             
             <div class="radio-group">
-                <label><input type="radio" name="userGender" value="female"> 여자</label>
-                <label><input type="radio" name="userGender" value="male"> 남자</label>
+                <label><input type="radio" name="userGender" value="F"> 여자</label>
+                <label><input type="radio" name="userGender" value="M"> 남자</label>
             </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
             
-            
             <textarea class="input-box" name="userExperience" placeholder="경력사항"></textarea>
-            
             
             <button type="submit" class="btn">회원가입</button>
         </form>
