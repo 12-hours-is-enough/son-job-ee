@@ -21,5 +21,17 @@ public class TimestampConverter {
             return null;
         }
     }
+    
+   public static Date convertStringToDate(String dateStr) {
+	   try {
+           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+           Date parsedDate = sdf.parse(dateStr);
+           return new Date(parsedDate.getTime());
+
+	   } catch (Exception e) {
+           e.printStackTrace();
+           return null;
+       }
+   }
 
 }
