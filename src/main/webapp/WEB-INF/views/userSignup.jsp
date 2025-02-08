@@ -16,10 +16,10 @@
             align-items: center;
             height: 100vh;
             background-color: #f8f8f8;
-		    font-family: "Noto Sans KR", serif;
-		    font-optical-sizing: auto;
-		    font-weight: 500;
-		    font-style: normal;
+            font-family: "Noto Sans KR", serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
         }
         .signup-container {
             text-align: center;
@@ -28,7 +28,7 @@
             font-size: 24px;
             margin-bottom: 20px;
         }
-        .input-box {
+        .input-box, select {
             display: block;
             width: 250px;
             padding: 10px;
@@ -36,6 +36,17 @@
             border: none;
             border-radius: 5px;
             background-color: #f0f0f0;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+        }
+        select {
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="20" width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+            padding-right: 30px;
         }
         .btn {
             display: block;
@@ -67,16 +78,16 @@
             align-items: center;
             margin-bottom: 10px;
             width: 100%;
-            max-width: 350px; /* 폼 전체 너비 */
+            max-width: 350px;
         }
-        
-		.form-group label {
-		    font-size: 16px;
-		    font-weight: bold;
-		    margin-right: 10px; /* 오른쪽 여백 줄임 */
-		    white-space: nowrap; /* 텍스트가 줄 바뀌지 않도록 설정 */
-		}
+        .form-group label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 10px;
+            white-space: nowrap;
+        }
     </style>
+
 </head>
 <body>
     <div class="signup-container">
@@ -110,15 +121,44 @@
            		<label for="userId">생년월일 &nbsp;</label>
             	<input type="date" class="input-box" name="userBirth" required>
             </div>
-            
-            
+
+            <div class="form-group">
+                <label for="preferredDate">선호 날짜 &nbsp;</label>
+                <select class="input-box" name="preferred_location" required>
+                    <option value="weekday">평일</option>
+                    <option value="weekend">주말</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="preferreJob">선호 직종 &nbsp;</label>
+                <select class="input-box" name="preferred_job_category" required>
+                    <option value="security">경비</option>
+                    <option value="driver">운전</option>
+                    <option value="delivery">배달</option>
+                    <option value="cleaning">청소</option>S
+                    <option value="instructor">강사</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="preferreLocation">선호 지역 &nbsp;</label>
+                <select class="input-box" name="preferred_job_category" required>
+                    <option value="seoul">서울</option>
+                    <option value="busan">부산</option>
+                    <option value="daegu">대구</option>
+                    <option value="incheon">인천</option>
+                    <option value="gwangju">광주</option>
+                </select>
+            </div>
+
             <div class="radio-group">
                 <label><input type="radio" name="userGender" value="F"> 여자</label>
                 <label><input type="radio" name="userGender" value="M"> 남자</label>
-            </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
-            
+            </div>
+
             <textarea class="input-box" name="userExperience" placeholder="경력사항"></textarea>
-            
+
             <button type="submit" class="btn">회원가입</button>
         </form>
     </div>
