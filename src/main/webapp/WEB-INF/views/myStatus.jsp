@@ -134,10 +134,10 @@
 
     <div class="sidebar">
         <h2 onclick="location.href='jobList.jsp'">⚙ Son-jab-ee</h2>
-        <a href="jobList.jsp" class="nav-item">공고 리스트</a>
-        <a href="myStatus.jsp" class="nav-item active">지원 현황</a>
+        <a href="job" class="nav-item">공고 리스트</a>
+        <a href="mystatus" class="nav-item active">지원 현황</a>
         <a href="userPage.jsp" class="nav-item">마이 페이지</a>
-        <a href="logout.jsp">로그아웃</a>
+        <a href="logout">로그아웃</a>
         <div class="user-info">구직자 🟢 홍길동님</div>
     </div>
 

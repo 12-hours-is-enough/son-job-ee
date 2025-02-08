@@ -41,7 +41,6 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String userType = request.getParameter("userType");
     	HttpSession session = request.getSession();
-    	String url = "job";
     	
     	if (userType.equals("user")) {
     		User user = UserDAO.getUserLoginInfo(request.getParameter("userId"), request.getParameter("userPw"));
@@ -49,17 +48,18 @@ public class LoginServlet extends HttpServlet {
     			session.setAttribute("usertype", "user");
     			session.setAttribute("id", user.getId());
     			session.setAttribute("islogin", "true");
-    			response.sendRedirect(url);
+    			response.sendRedirect("job");
     		} else {
     			request.getRequestDispatcher("/WEB-INF/views/loginFail.jsp").forward(request, response);
     		}
     	} else if (userType.equals("company")) {
-    		Company company = CompanyDAO.getCompanyLoginInfo(request.getParameter("userId"), request.getParameter("userPws"));
+    		Company company = CompanyDAO.getCompanyLoginInfo(request.getParameter("userId"), request.getParameter("userPw"));
+    		System.out.println(company);
     		if (company.getId() != null) {
     			session.setAttribute("usertype", "company");
     			session.setAttribute("id", company.getId());    			
     			session.setAttribute("islogin", "true");
-    			response.sendRedirect(url);
+    			response.sendRedirect("board");
     		} else {
     			request.getRequestDispatcher("/WEB-INF/views/loginFail.jsp").forward(request, response);
     		}
