@@ -115,20 +115,14 @@
 </head>
 <body>
     <div class="login-container">
-    
-        <p id="loginError" style="color: red;">
-		    * 로그인에 실패했습니다. *
-		</p>
-		        
         <h2>로그인</h2>
-        
         
         <!-- login button 누르면 email, pw, usertype 넘기기 (/login 에 post로 넘길거임) -->
         
         <form action="login" method="post">
             <div class="radio-group">
-                <label><input type="radio" name="userType" value="user" required> 구인자</label>
-                <label><input type="radio" name="userType" value="company" required> 구직자</label>
+                <label><input type="radio" name="userType" value="company" required> 구인자</label>
+                <label><input type="radio" name="userType" value="user" required> 구직자</label>
             </div>
             <div class="form-group">
                 <label for="userId">ID &nbsp;</label>
@@ -141,7 +135,15 @@
             
             <button type="submit" class="login-btn">log in</button> 
         </form>
+        
+        <form action="signup" method="get" id="signupForm" style="display:none;">	
+        	<input type="hidden" name="userType" id="userTypeHidden">
+    	</form>
         <a href="signup" class="signup-link">회원가입</a>
+        <a href="jobList.jsp" class="signup-link">job list</a>
     </div>
+    
+    <script src="assets/js/script.js"></script>
+    
 </body>
 </html>
