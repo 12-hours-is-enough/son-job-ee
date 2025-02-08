@@ -87,26 +87,6 @@ public class CompanyDAO {
 		PreparedStatement pstmt = null;
 		
 		try {
-<<<<<<< Updated upstream
-        	conn = DBConnection.getConnection();
-        	pstmt = conn.prepareStatement("INSERT INTO  (name, phone, email, password, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)");
-			
-        	pstmt.setString(1, co.getName());
-        	pstmt.setString(2, co.getPhone());
-        	pstmt.setString(3, co.getEmail());
-        	pstmt.setString(4, co.getPassword()); 	
-        	
-        	// getTime() 메서드를 사용하여 java.util.Date 객체의 시간을 밀리초 단위로 얻고 이를 java.sql.Date 객체로 변환
-        	java.sql.Date sqlCreatedAt = new java.sql.Date(co.getCreatedAt().getTime());
-    	    pstmt.setDate(5, sqlCreatedAt);
-
-    	    java.sql.Date sqlUpdatedAt = new java.sql.Date(co.getUpdatedAt().getTime());
-    	    pstmt.setDate(6, sqlUpdatedAt);  
-    	    
-    	    if(pstmt.executeUpdate() != 0) {
-    	    	return true;
-    	    }
-=======
 			conn = DBConnection.getConnection();
 			pstmt = conn.prepareStatement(
 					"INSERT INTO companies (name, phone, email, password, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
@@ -119,7 +99,6 @@ public class CompanyDAO {
 			if (pstmt.executeUpdate() != 0) {
 				return true;
 			}
->>>>>>> Stashed changes
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw e;
@@ -136,12 +115,8 @@ public class CompanyDAO {
 		
 		try {
 			conn = DBConnection.getConnection();
-<<<<<<< Updated upstream
-			pstmt = conn.prepareStatement("UPDATE company SET name=?, phone=?, email=?, password=?, updated_at=? WHERE id=?");
-=======
 			pstmt = conn.prepareStatement(
 					"UPDATE companies SET name=?, phone=?, email=?, password=?, updated_at=? WHERE id=?");
->>>>>>> Stashed changes
 
 			pstmt.setString(1, co.getName());   
 		    pstmt.setString(2, co.getPhone());   
@@ -187,6 +162,43 @@ public class CompanyDAO {
 			DBConnection.close(conn, pstmt);
 		}
 		return result;
+	}
+	
+	// 로그인을 위한 email, 비밀번호 확인
+	public static Company getCompanyLoginInfo(String email, String inputPassword) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Company company = null;
+
+		try {
+			conn = DBConnection.getConnection();
+			pstmt = conn.prepareStatement("SELECT * FROM companies WHERE email = ?");
+			pstmt.setString(1, email);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				String storedPassword = rs.getString("password"); // DB에 저장된 비밀번호
+
+				// 입력된 비밀번호와 DB 비밀번호 비교
+				if (storedPassword.equals(inputPassword)) {
+					company = new Company();
+					company.setId(rs.getInt("id"));
+					
+					System.out.println("⭕ 로그인 성공");
+				} else {
+					System.out.println("❌ 비밀번호가 일치하지 않습니다.");
+				}
+			} else {
+				System.out.println("❌ 이메일이 존재하지 않습니다.");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Database error occurred while fetching getCompanyLoginInfo", e);
+		} finally {
+			DBConnection.close(conn, pstmt, rs);
+		}
+		return company;
 	}
 	
 }

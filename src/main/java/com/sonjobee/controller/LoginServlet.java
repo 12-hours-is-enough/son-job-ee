@@ -50,7 +50,7 @@ public class LoginServlet extends HttpServlet {
     			session.setAttribute("usertype", "user");
     			session.setAttribute("id", user.getId());
     	    	session.setAttribute("isLogin", "true");
-    	    	response.sendRedirect(url);
+    	    	response.sendRedirect("job");
     		} else {
     			request.getRequestDispatcher("/WEB-INF/views/loginFail.jsp").forward(request, response);
     		}
@@ -60,6 +60,7 @@ public class LoginServlet extends HttpServlet {
     			session.setAttribute("usertype", "company");
     			session.setAttribute("id", company.getId());    
     	    	session.setAttribute("isLogin", "true");
+    	    	response.sendRedirect("board");
 
     		} else {
     			request.getRequestDispatcher("/WEB-INF/views/loginFail.jsp").forward(request, response);
