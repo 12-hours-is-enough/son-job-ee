@@ -2,7 +2,9 @@ package com.sonjobee.controller;
 
 import java.io.IOException;
 
+import com.sonjobee.dao.CompanyDAO;
 import com.sonjobee.dao.UserDAO;
+import com.sonjobee.model.Company;
 import com.sonjobee.model.User;
 import com.sonjobee.util.TimestampConverter;
 
@@ -16,13 +18,42 @@ import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
+	
 	private UserDAO userDAO;
-
+	private CompanyDAO companyDAO;
+	
+    @Override
+    public void init() throws ServletException {
+        // DB 연결을 가져오는 부분을 jobDAO 객체에 전달
+        userDAO = new UserDAO();
+        companyDAO = new CompanyDAO();
+    }
+	
 	@Override
-	public void init() throws ServletException {
-		// DB 연결을 가져오는 부분을 jobDAO 객체에 전달
-		userDAO = new UserDAO();
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		
+		if (session.getAttribute("islogin") == null) {
+			response.sendRedirect("login");
+			return ;
+		} 
+		
+		try {
+			if (session.getAttribute("usertype").equals("user")) {
+				User user = userDAO.getUserInfo(Integer.parseInt(request.getParameter("id")));
+				
+				request.setAttribute("userInfo", user);
+				request.getRequestDispatcher("/WEB-INF/views/userPage.jsp").forward(request, response);
+			} else if (session.getAttribute("usertype").equals("company")) {
+				Company company = companyDAO.getOneCompany(Integer.parseInt(request.getParameter("id")));
+				
+				request.setAttribute("companyInfo", company);
+				request.getRequestDispatcher("/WEB-INF/views/companyPage.jsp").forward(request, response);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
 
 	// user 수정
 	@Override
@@ -68,7 +99,7 @@ public class UserServlet extends HttpServlet {
 		user.setAdditionalInfo(request.getParameter("additionalInfo"));
 
 		try {
-			UserDAO.userSign(user);
+			userDAO.userSign(user);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/jobList.jsp");
 			dispatcher.forward(request, response);
 		} catch (Exception e) {
@@ -87,7 +118,7 @@ public class UserServlet extends HttpServlet {
 		int userId = (Integer) session.getAttribute("id");
 
 		try {
-			UserDAO.deleteUser(userId);
+			userDAO.deleteUser(userId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
@@ -116,7 +147,7 @@ public class UserServlet extends HttpServlet {
 		user.setAdditionalInfo(request.getParameter("additionalInfo"));
 
 		// DB 업데이트
-		boolean success = UserDAO.updateUserInfo(userId, user);
+		boolean success = userDAO.updateUserInfo(userId, user);
 
 		if (success) {
 			response.sendRedirect("userPage.jsp?message=정보가 성공적으로 업데이트되었습니다.");
@@ -140,7 +171,7 @@ public class UserServlet extends HttpServlet {
 
 		int jobId = Integer.parseInt(jobIdParam);
 		
-		boolean success = UserDAO.updateUserAppliedList(userId, jobId);
+		boolean success = userDAO.updateUserAppliedList(userId, jobId);
 
 		if (success) {
 			response.sendRedirect("jobList.jsp?message=지원이 완료되었습니다.");

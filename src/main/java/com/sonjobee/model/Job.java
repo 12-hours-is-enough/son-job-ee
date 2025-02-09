@@ -16,6 +16,8 @@ import lombok.Setter;
 public class Job {
     private int id;
     private int companyId;		// 회사 ID
+    private String jobTitle;    // 공고 제목
+    private String jobContent;  // 공고내
     private String location;	// 회사 위치
     private String jobCategory;	// 작업 카테고리
     private String salary;		// 급여

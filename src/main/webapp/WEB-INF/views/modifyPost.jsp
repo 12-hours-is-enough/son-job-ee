@@ -1,4 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@page import="com.sonjobee.model.Job"%>
+<%
+    // Servlet에서 넘겨준 job 객체 가져오기
+    Job job = (Job) request.getAttribute("job");
+    // 세션에서 구인자 이름 가져오기
+    String name = (String) session.getAttribute("name");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -117,48 +124,53 @@
 
     <!-- 사이드바 -->
     <div class="sidebar">
-        <h2 onclick="location.href='jobList.jsp'">⚙ Son-jab-ee</h2>
-        <a href="uploadPost.jsp" class="nav-item">공고 업로드</a>
-        <a href="myPosts.jsp" class="nav-item">올린 공고</a>
-        <a href="companyPage.jsp" class="nav-item">마이 페이지</a>
-        <a href="logout.jsp">로그아웃</a>
-        <div class="user-info">구인자 🏢 해바라기 학원님</div>
+        <h2 onclick="location.href='board'">⚙ Son-jab-ee</h2>
+        <a href="post" class="nav-item">공고 업로드</a>
+        <a href="board" class="nav-item">올린 공고</a>
+        <a href="user" class="nav-item">마이 페이지</a>
+        <a href="logout">로그아웃</a>
+        <div class="user-info">구인자 🏢 <%= name %>님</div>
     </div>
 
     <!-- 메인 컨텐츠 -->
     <div class="content">
         <h2 class="title">▶ 공고 수정</h2>
 
-        <form action="updatePostProcess.jsp" method="post" class="form-container">
-            <input type="hidden" name="postId" value="<%= request.getParameter("postId") %>">
+		<form action="/son-job-ee/job/<%= job.getId() %>" method="POST" class="form-container">
+            <input type="hidden" name="postId" value="<%= job.getId() %>">
 
-            <div class="form-group">
-                <label for="companyName">회사 이름</label>
-                <input type="text" class="input-box" id="companyName" name="companyName" required value="해바라기 학원">
-            </div>
-            <div class="form-group">
+			<div class="form-group">
                 <label for="jobTitle">공고 제목</label>
-                <input type="text" class="input-box" id="jobTitle" name="jobTitle" required value="운전 기사 구합니다.">
+                <input type="text" class="input-box" id="jobTitle" name="jobTitle" required value="<%= job.getJobTitle() %>">
             </div>
             <div class="form-group">
-                <label for="jobDescription">공고 내용</label>
-                <input type="text" class="input-box" id="jobDescription" name="jobDescription" required value="운전 업무 가능자 모집">
+                <label for="jobContent">공고 내용</label>
+                <input type="text" class="input-box" id="jobContent" name="jobContent" required value="<%= job.getJobContent() %>">
             </div>
-            <div class="form-group">
-                <label for="jobType">업무 유형</label>
-                <input type="text" class="input-box" id="jobType" name="jobType" required value="운전">
+			<div class="form-group">
+                <label for="jobCategory">업무 유형</label>
+                <input type="text" class="input-box" id="jobCategory" name="jobCategory" required value="<%= job.getJobCategory() %>">
             </div>
             <div class="form-group">
                 <label for="salary">급여</label>
-                <input type="text" class="input-box" id="salary" name="salary" required value="월 300만원">
+                <input type="text" class="input-box" id="salary" name="salary" required value="<%= job.getSalary() %>">
+            </div>
+			<div class="form-group">
+                <label for="schedule">근무일정</label>
+                <input type="text" class="input-box" id="schedule" name="schedule" required value="<%= job.getSchedule() %>">
             </div>
             <div class="form-group">
                 <label for="location">지역</label>
-                <input type="text" class="input-box" id="location" name="location" required value="서울">
+                <input type="text" class="input-box" id="location" name="location" required value="<%= job.getLocation() %>">
             </div>
             <div class="form-group">
-                <label for="priority">우대사항</label>
-                <input type="text" class="input-box" id="priority" name="priority" value="경력자 우대">
+                <label for="additionalInfo">기타정보</label>
+                <input type="text" class="input-box" id="additionalInfo" name="additionalInfo" value="<%= job.getAdditionalInfo() %>">
+            </div>
+            
+			<div class="form-group">
+           		<label for="applicationDeadline">기한날짜 &nbsp;</label>
+            	<input type="date" class="input-box" name="applicationDeadline" required value="<%= job.getApplicationDeadline() %>">
             </div>
 
             <button type="submit" class="btn">공고 수정</button>

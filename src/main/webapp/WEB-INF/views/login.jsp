@@ -112,13 +112,15 @@
             text-decoration: underline;
         }
     </style>
+
 </head>
 <body>
-    <div class="login-container">
-        <h2>로그인</h2>
-        
-        <!-- login button 누르면 email, pw, usertype 넘기기 (/login 에 post로 넘길거임) -->
-        
+	<div class="login-container">
+		<h2>로그인</h2>
+
+		<!-- login button 누르면 email, pw, usertype 넘기기 (/login 에 post로 넘길거임) -->
+
+        <!-- 로그인 폼 -->
         <form action="login" method="post">
             <div class="radio-group">
                 <label><input type="radio" name="userType" value="company" required> 구인자</label>
@@ -135,15 +137,14 @@
             
             <button type="submit" class="login-btn">log in</button> 
         </form>
-        
-        <form action="signup" method="get" id="signupForm" style="display:none;">	
-        	<input type="hidden" name="userType" id="userTypeHidden">
-    	</form>
         <a href="signup" class="signup-link">회원가입</a>
-        <a href="jobList.jsp" class="signup-link">job list</a>
     </div>
-    
-    <script src="assets/js/script.js"></script>
-    
+
+    <!-- 회원가입 링크에서 userType 값을 넘겨줄 폼 추가 -->
+    <form action="signup" method="get" id="signupForm" style="display:none;">
+        <input type="hidden" name="userType" id="userTypeHidden">
+    </form>
+	<script src="assets/js/login.js"></script>  
+
 </body>
 </html>

@@ -38,6 +38,8 @@ public class JobDAO {
 				Job job = new Job();
 				job.setId(rs.getInt("id"));
 				job.setCompanyId(rs.getInt("company_id"));
+				job.setJobTitle(rs.getString("job_title"));
+				job.setJobContent(rs.getString("job_content"));
 				job.setLocation(rs.getString("location"));
 				job.setJobCategory(rs.getString("job_category"));
 				job.setSalary(rs.getString("salary"));
@@ -103,6 +105,8 @@ public class JobDAO {
 		                Job job = new Job();
 		                job.setId(rs.getInt("id"));
 		                job.setCompanyId(rs.getInt("company_id"));
+						job.setJobTitle(rs.getString("job_title"));
+						job.setJobContent(rs.getString("job_content"));
 		                job.setLocation(rs.getString("location"));
 		                job.setJobCategory(rs.getString("job_category"));
 		                job.setSalary(rs.getString("salary"));
@@ -145,6 +149,8 @@ public class JobDAO {
 				job = new Job();
 				job.setId(rs.getInt("id"));
 				job.setCompanyId(rs.getInt("company_id"));
+				job.setJobTitle(rs.getString("job_title"));
+				job.setJobContent(rs.getString("job_content"));
 				job.setLocation(rs.getString("location"));
 				job.setJobCategory(rs.getString("job_category"));
 				job.setSalary(rs.getString("salary"));
@@ -181,6 +187,8 @@ public class JobDAO {
 				Job job = new Job();
 				job.setId(rs.getInt("id"));
 				job.setCompanyId(rs.getInt("company_id"));
+				job.setJobTitle(rs.getString("job_title"));
+				job.setJobContent(rs.getString("job_content"));
 				job.setLocation(rs.getString("location"));
 				job.setJobCategory(rs.getString("job_category"));
 				job.setSalary(rs.getString("salary"));
@@ -204,22 +212,24 @@ public class JobDAO {
 
 
 	// 공고 생성하기
-	public static boolean createJob(Job job) {
+	public boolean createJob(Job job) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "INSERT INTO jobs (company_id, location, job_category, salary, schedule, additional_info, application_deadline, created_at, updated_at) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+			String sql = "INSERT INTO jobs (company_id, job_title, job_content, location, job_category, salary, schedule, additional_info, application_deadline, created_at, updated_at) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, job.getCompanyId());
-			pstmt.setString(2, job.getLocation());
-			pstmt.setString(3, job.getJobCategory());
-			pstmt.setString(4, job.getSalary());
-			pstmt.setString(5, Job.isValidSchedule(job.getSchedule()) ? job.getSchedule() : "상관없음"); // 유효성 검사
-			pstmt.setString(6, job.getAdditionalInfo());
-			pstmt.setDate(7, new Date(job.getApplicationDeadline().getTime()));
+			pstmt.setString(2, job.getJobTitle());
+			pstmt.setString(3, job.getJobContent());;
+			pstmt.setString(4, job.getLocation());
+			pstmt.setString(5, job.getJobCategory());
+			pstmt.setString(6, job.getSalary());
+			pstmt.setString(7, Job.isValidSchedule(job.getSchedule()) ? job.getSchedule() : "상관없음"); // 유효성 검사
+			pstmt.setString(8, job.getAdditionalInfo());
+			pstmt.setDate(9, new Date(job.getApplicationDeadline().getTime()));
 
 			int rowsAffected = pstmt.executeUpdate();
 			return rowsAffected > 0; // 성공적으로 삽입되면 true 반환
@@ -233,23 +243,25 @@ public class JobDAO {
 	}
 
 	// 공고 수정하기
-	public static boolean updateJobInfo(int jobId, Job job) {
+	public boolean updateJobInfo(int jobId, Job job) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "UPDATE jobs SET location = ?, job_category = ?, salary = ?, schedule = ?, "
+			String sql = "UPDATE jobs SET job_title = ?, job_content = ?, location = ?, job_category = ?, salary = ?, schedule = ?, "
 					+ "additional_info = ?, application_deadline = ?, updated_at = NOW() WHERE id = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, job.getLocation());
-			pstmt.setString(2, job.getJobCategory());
-			pstmt.setString(3, job.getSalary());
-			pstmt.setString(4, Job.isValidSchedule(job.getSchedule()) ? job.getSchedule() : "상관없음"); // 유효한 schedule 값이
+			pstmt.setString(1, job.getJobTitle());
+			pstmt.setString(2, job.getJobContent());
+			pstmt.setString(3, job.getLocation());
+			pstmt.setString(4, job.getJobCategory());
+			pstmt.setString(5, job.getSalary());
+			pstmt.setString(6, Job.isValidSchedule(job.getSchedule()) ? job.getSchedule() : "상관없음"); // 유효한 schedule 값이
 																										// 아닌 경우 상관없음
-			pstmt.setString(5, job.getAdditionalInfo());
-			pstmt.setDate(6, new Date(job.getApplicationDeadline().getTime()));
-			pstmt.setInt(7, jobId);
+			pstmt.setString(7, job.getAdditionalInfo());
+			pstmt.setDate(8, new Date(job.getApplicationDeadline().getTime()));
+			pstmt.setInt(9, jobId);
 
 			int rowsAffected = pstmt.executeUpdate();
 			return rowsAffected > 0; // 업데이트 성공 여부 반환
@@ -263,7 +275,7 @@ public class JobDAO {
 	}
 
 	// 공고 삭제하기
-	public static boolean deleteJob(int jobId) {
+	public boolean deleteJob(int jobId) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 

@@ -63,7 +63,7 @@ public class CompanyServlet extends HttpServlet {
     		coms.setPassword(request.getParameter("password"));
 	    
 	    	try {
-				CompanyDAO.updateCompany(coms); // 수정된 객체만 전달 //????
+				companyDAO.updateCompany(coms); // 수정된 객체만 전달 //????
 	            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/jobList.jsp");//여기랑
 	            dispatcher.forward(request, response);
 	        } catch (Exception e) {
@@ -85,7 +85,7 @@ public class CompanyServlet extends HttpServlet {
 	        // job 생성 추가
     		//
     		try {
-    			CompanyDAO.signUpCompany(coms); // 수정된 객체만 전달 //????
+    			companyDAO.signUpCompany(coms); // 수정된 객체만 전달 //????
 	            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/jobList.jsp");//여기랑
 	            dispatcher.forward(request, response);
 				

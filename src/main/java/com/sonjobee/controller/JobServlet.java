@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import com.sonjobee.dao.CompanyDAO;
 import com.sonjobee.dao.JobDAO;
+import com.sonjobee.dao.UserDAO;
 import com.sonjobee.model.Job;
 import com.sonjobee.util.TimestampConverter;
 
@@ -14,16 +16,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 
 @WebServlet("/job/*")
-public class JobServlet extends HttpServlet {
-
-    private JobDAO jobDAO;
-
+public class JobServlet extends HttpServlet {	
+	private JobDAO jobDAO;
+	
     @Override
     public void init() throws ServletException {
-        // DB 연결을 가져오는 부분을 jobDAO 객체에 전달
         jobDAO = new JobDAO();
     }
     
@@ -57,42 +58,48 @@ public class JobServlet extends HttpServlet {
     			
     }
     
-    // job 수정
-    @Override
-	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {    	
-    	Job job = new Job();
-        job.setLocation(request.getParameter("location"));
-        job.setJobCategory(request.getParameter("jobCategory"));
-        job.setSalary(request.getParameter("salary"));
-        job.setSchedule(request.getParameter("schedule"));
-        job.setAdditionalInfo(request.getParameter("additionalInfo"));
-        job.setApplicationDeadline(TimestampConverter.convertStringToTimestamp(request.getParameter("applicationDeadline")));
-    
-    	try {
-			JobDAO.updateJobInfo(Integer.parseInt(request.getParameter("jobId")), job);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/jobList.jsp");
-            dispatcher.forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred while fetching job data.");
-        }
-	}    
-    
-    
-    // job 생성
+    // job 생성 및 수정
     @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	Job job = new Job();
-        job.setCompanyId(Integer.parseInt(request.getParameter("companyId")));
-        job.setLocation(request.getParameter("location"));
-        job.setJobCategory(request.getParameter("jobCategory"));
-        job.setSalary(request.getParameter("salary"));
-        job.setSchedule(request.getParameter("schedule"));
-        job.setAdditionalInfo(request.getParameter("additionalInfo"));
-        job.setApplicationDeadline(TimestampConverter.convertStringToTimestamp(request.getParameter("applicationDeadline")));
-    	
-        // job 생성 추가
+    	HttpSession session = request.getSession();
+        String pathInfo = request.getPathInfo();
 
+		if (session.getAttribute("islogin") == null) {
+			response.sendRedirect("login");
+			return ;
+		}
+		try {
+	        if (pathInfo == null || pathInfo.equals("/")) {
+	    		int id = (Integer) session.getAttribute("id");
+	        	Job job = new Job();
+	            job.setCompanyId(id);
+	        	job.setJobTitle(request.getParameter("jobTitle"));
+	        	job.setJobContent(request.getParameter("jobContent"));
+	            job.setLocation(request.getParameter("location"));
+	            job.setJobCategory(request.getParameter("jobCategory"));
+	            job.setSalary(request.getParameter("salary"));
+	            job.setSchedule(request.getParameter("schedule"));
+	            job.setAdditionalInfo(request.getParameter("additionalInfo"));
+	            job.setApplicationDeadline(TimestampConverter.convertStringToDate(request.getParameter("applicationDeadline")));
+	            jobDAO.createJob(job);
+	            response.sendRedirect("board");
+	        } else {
+	        	Job job = new Job();
+	        	job.setJobTitle(request.getParameter("jobTitle"));
+	        	job.setJobContent(request.getParameter("jobContent"));
+	            job.setLocation(request.getParameter("location"));
+	            job.setJobCategory(request.getParameter("jobCategory"));
+	            job.setSalary(request.getParameter("salary"));
+	            job.setSchedule(request.getParameter("schedule"));
+	            job.setAdditionalInfo(request.getParameter("additionalInfo"));
+	            job.setApplicationDeadline(TimestampConverter.convertStringToDate(request.getParameter("applicationDeadline")));
+				System.out.println(job);
+	            jobDAO.updateJobInfo(Integer.parseInt(pathInfo.substring(1)), job);
+	            response.sendRedirect("/son-job-ee/board");
+	        }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
     
     // job 삭제 맞는지 확인 플리즈
@@ -108,7 +115,7 @@ public class JobServlet extends HttpServlet {
         try {
             int jobId = Integer.parseInt(pathInfo.substring(1));
             
-            boolean isDeleted = JobDAO.deleteJob(jobId);
+            boolean isDeleted = jobDAO.deleteJob(jobId);
 
             if (isDeleted) {
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT); // 204: 성공적으로 삭제됨

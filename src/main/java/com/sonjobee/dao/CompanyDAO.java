@@ -63,13 +63,13 @@ public class CompanyDAO {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				Company coms = new Company();
-				coms.setId(rs.getInt("id"));
-				coms.setName(rs.getString("name"));
-				coms.setPhone(rs.getString("phone"));
-				coms.setPassword(rs.getString("password"));
-				coms.setCreatedAt(rs.getTimestamp("created_at"));
-				coms.setUpdatedAt(rs.getTimestamp("updated_at"));
+				company = new Company();
+				company.setId(rs.getInt("id"));
+				company.setName(rs.getString("name"));
+				company.setPhone(rs.getString("phone"));
+				company.setPassword(rs.getString("password"));
+				company.setCreatedAt(rs.getTimestamp("created_at"));
+				company.setUpdatedAt(rs.getTimestamp("updated_at"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -81,7 +81,7 @@ public class CompanyDAO {
 	}
 
 	// register company (insert company info)
-	public static boolean signUpCompany(Company co) throws SQLException {
+	public boolean signUpCompany(Company co) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -108,7 +108,7 @@ public class CompanyDAO {
 	}
 
 	// modify company info
-	public static boolean updateCompany(Company co) throws SQLException {
+	public boolean updateCompany(Company co) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -162,7 +162,7 @@ public class CompanyDAO {
 	}
 
 	// 로그인을 위한 email, 비밀번호 확인
-	public static Company getCompanyLoginInfo(String email, String inputPassword) {
+	public Company getCompanyLoginInfo(String email, String inputPassword) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -181,6 +181,7 @@ public class CompanyDAO {
 				if (storedPassword.equals(inputPassword)) {
 					company = new Company();
 					company.setId(rs.getInt("id"));
+					company.setName(rs.getString("name"));
 					
 					System.out.println("⭕ 로그인 성공");
 				} else {

@@ -2,14 +2,14 @@
 <%@page import="com.sonjobee.model.Job"%>
 <%@page import="com.sonjobee.dao.JobDAO"%>
 <%@ page import="java.util.List" %>
+<%@ page import= "jakarta.servlet.http.HttpSession"%>
 
 <%-- 지원 현황 
 		내가 지원한 공고 jobDAO에서 데이터 불러오기
  --%>
 <%
-	int userId = 1; 
-	JobDAO jobDAO = new JobDAO();
-	List<Job> appliedJobs = jobDAO.getAppliedJobs(userId);
+	List<Job> appliedJobs = (List<Job>) request.getAttribute("appliedJobs");
+	String name = (String) session.getAttribute("name");
 %>
 
 
@@ -133,12 +133,12 @@
 <body>
 
     <div class="sidebar">
-        <h2 onclick="location.href='jobList.jsp'">⚙ Son-jab-ee</h2>
+        <h2 onclick="location.href='job'">⚙ Son-jab-ee</h2>
         <a href="job" class="nav-item">공고 리스트</a>
-        <a href="mystatus" class="nav-item active">지원 현황</a>
-        <a href="userPage.jsp" class="nav-item">마이 페이지</a>
+        <a href="board" class="nav-item active">지원 현황</a>
+        <a href="user" class="nav-item">마이 페이지</a>
         <a href="logout">로그아웃</a>
-        <div class="user-info">구직자 🟢 홍길동님</div>
+		<div class="user-info">구직자 🟢 <%= name %>님</div>
     </div>
 
     <div class="content">
