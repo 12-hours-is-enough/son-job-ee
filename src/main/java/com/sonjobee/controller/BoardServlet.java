@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpSession;
 /* 지원 현황
  * 공고 현황
  */
-@WebServlet("/board")
+@WebServlet("/board/*")
 public class BoardServlet extends HttpServlet {
 
 	private JobDAO jobDAO;
@@ -52,19 +52,27 @@ public class BoardServlet extends HttpServlet {
 		
 		if(userType.equals("user")) {
 			// jobDAO에서 해당 jobId 리스트로 Job 전체 정보 가져오기
-			List<Job> jobList = jobDAO.getAppliedJobs(id);
+			List<Job> appliedJobs = jobDAO.getAppliedJobs(id);
 
-			request.setAttribute("jobList", jobList);
+			request.setAttribute("appliedJobs", appliedJobs);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/myStatus.jsp");
 			dispatcher.forward(request, response);
 		}
 		else if (userType.equals("company")) {
-			// jobDAO에서 해당 jobId 리스트로 Job 전체 정보 가져오기
-			List<Job> jobList = jobDAO.getCompanyJob(id);
+			String pathInfo = request.getPathInfo();
+			
+			if (pathInfo == null || pathInfo.equals("/")) {
+				List<Job> jobList = jobDAO.getCompanyJob(id);
 
-			request.setAttribute("jobList", jobList);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/myPosts.jsp");
-			dispatcher.forward(request, response);
+				request.setAttribute("jobList", jobList);
+				request.getRequestDispatcher("/WEB-INF/views/myPosts.jsp").forward(request, response);
+			} else {
+				int jobId = Integer.parseInt(pathInfo.substring(1));
+				Job job = jobDAO.getOneJob(jobId);
+				
+				request.setAttribute("job", job);
+				request.getRequestDispatcher("/WEB-INF/views/modifyPost.jsp").forward(request, response);
+			}
 		}
 		
 	}

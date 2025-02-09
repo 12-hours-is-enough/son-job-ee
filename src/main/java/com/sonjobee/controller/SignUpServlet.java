@@ -18,6 +18,16 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/signup")
 public class SignUpServlet extends HttpServlet {
 	
+	private UserDAO userDAO;
+	private CompanyDAO companyDAO;
+	
+    @Override
+    public void init() throws ServletException {
+        // DB 연결을 가져오는 부분을 jobDAO 객체에 전달
+        userDAO = new UserDAO();
+        companyDAO = new CompanyDAO();
+    }
+	
 	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
@@ -50,7 +60,7 @@ public class SignUpServlet extends HttpServlet {
         		user.setGender(request.getParameter("userGender"));
         		user.setExperience(request.getParameter("userExperience"));
         		
-        		UserDAO.userSign(user);
+        		userDAO.userSign(user);
         		
     			response.sendRedirect("login");
         	} else if (userType.equals("company")) {
@@ -61,7 +71,7 @@ public class SignUpServlet extends HttpServlet {
         		company.setPhone(request.getParameter("companyPhone"));
         		company.setPassword(request.getParameter("companyPw"));
         		
-        		CompanyDAO.signUpCompany(company);
+        		companyDAO.signUpCompany(company);
         		
     			response.sendRedirect("login");
         	}

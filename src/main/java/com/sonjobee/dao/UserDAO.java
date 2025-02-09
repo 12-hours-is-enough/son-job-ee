@@ -19,7 +19,7 @@ public class UserDAO {
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
 	// 특정 User 정보 전체 정보 가져오기 - 마이페이지 (session에 있는 id로 가져옴)
-	public static User getUserInfo(int userId) {
+	public User getUserInfo(int userId) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -59,7 +59,7 @@ public class UserDAO {
 	}
 
 	// 로그인을 위한 email, 비밀번호 확인
-	public static User getUserLoginInfo(String email, String inputPassword) {
+	public User getUserLoginInfo(String email, String inputPassword) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -78,6 +78,7 @@ public class UserDAO {
 				if (storedPassword.equals(inputPassword)) {
 					user = new User();
 					user.setId(rs.getInt("id"));
+					user.setName(rs.getString("name"));
 					System.out.println("⭕ 로그인 성공");
 				} else {
 					System.out.println("❌ 비밀번호가 일치하지 않습니다.");
@@ -95,7 +96,7 @@ public class UserDAO {
 	}
 
 	// User 회원가입 - 회원 가입 시 동일한 유저 있는지 확인
-	public static boolean userSign(User user) { // ✅ 매개변수 추가
+	public boolean userSign(User user) { // ✅ 매개변수 추가
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -144,7 +145,7 @@ public class UserDAO {
 	}
 
 	// User 정보 수정
-	public static boolean updateUserInfo(int userId, User userDto) {
+	public boolean updateUserInfo(int userId, User userDto) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -178,7 +179,7 @@ public class UserDAO {
 	}
 
 	// User의 applied 목록 수정
-	public static boolean updateUserAppliedList(int userId, int jobId) {
+	public boolean updateUserAppliedList(int userId, int jobId) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -225,7 +226,7 @@ public class UserDAO {
 	}
 
 	// user 삭제
-	public static boolean deleteUser(int userId) {
+	public boolean deleteUser(int userId) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -245,10 +246,4 @@ public class UserDAO {
 			DBConnection.close(conn, pstmt, null);
 		}
 	}
-
-
-	public static void main(String[] args) {
-        
-    }
-
 }

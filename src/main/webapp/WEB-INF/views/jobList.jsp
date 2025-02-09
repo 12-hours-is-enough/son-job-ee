@@ -5,8 +5,8 @@
 
 <%-- jobDAO 에서 데이터 받아오기 --%>
 <%
-    JobDAO jobDAO = new JobDAO();
-    List<Job> jobList = jobDAO.getAllJobs();
+	List<Job> jobs = (List<Job>) request.getAttribute("jobs");
+	String name = (String) session.getAttribute("name");
 %>
 
 <!DOCTYPE html>
@@ -154,12 +154,12 @@
 
     <!-- 사이드바 -->
     <div class="sidebar">
-        <h2 onclick="location.href='jobList.jsp'">⚙ Son-jab-ee</h2>
-        <a href="jobList.jsp" class="nav-item active">공고 리스트</a>
+        <h2 onclick="location.href='job'">⚙ Son-jab-ee</h2>
+        <a href="job" class="nav-item active">공고 리스트</a>
         <a href="board" class="nav-item">지원 현황</a>
-        <a href="userPage.jsp" class="nav-item">마이 페이지</a>
+        <a href="user" class="nav-item">마이 페이지</a>
         <a href="logout">로그아웃</a>
-        <div class="user-info">구직자 🟢 홍길동님</div>
+		<div class="user-info">구직자 🟢 <%= name %>님</div>
     </div>
 
     <!-- 메인 컨텐츠 -->
@@ -167,7 +167,7 @@
         <div class="content">
 		    <h2 class="title">▶ 공고 리스트</h2>
 		
-		    <% for (Job job : jobList) { %>
+		    <% for (Job job : jobs) { %>
 		        <div class="job-card">
 		            <div class="job-title"><%= job.getJobCategory() %></div>
 		            <div class="job-time">시간: <%= job.getSchedule() %></div>

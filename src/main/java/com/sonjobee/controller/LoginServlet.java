@@ -43,22 +43,23 @@ public class LoginServlet extends HttpServlet {
     	HttpSession session = request.getSession();
     	
     	if (userType.equals("user")) {
-    		User user = UserDAO.getUserLoginInfo(request.getParameter("userId"), request.getParameter("userPw"));
-    		if (user.getId() != null) {
+    		User user = userDAO.getUserLoginInfo(request.getParameter("userId"), request.getParameter("userPw"));
+    		if (user != null) {
     			session.setAttribute("usertype", "user");
     			session.setAttribute("id", user.getId());
     			session.setAttribute("islogin", "true");
+    			session.setAttribute("name", user.getName());
     			response.sendRedirect("job");
     		} else {
     			request.getRequestDispatcher("/WEB-INF/views/loginFail.jsp").forward(request, response);
     		}
     	} else if (userType.equals("company")) {
-    		Company company = CompanyDAO.getCompanyLoginInfo(request.getParameter("userId"), request.getParameter("userPw"));
-    		System.out.println(company);
-    		if (company.getId() != null) {
+    		Company company = companyDAO.getCompanyLoginInfo(request.getParameter("userId"), request.getParameter("userPw"));
+    		if (company != null) {
     			session.setAttribute("usertype", "company");
     			session.setAttribute("id", company.getId());    			
     			session.setAttribute("islogin", "true");
+    			session.setAttribute("name",company.getName());
     			response.sendRedirect("board");
     		} else {
     			request.getRequestDispatcher("/WEB-INF/views/loginFail.jsp").forward(request, response);

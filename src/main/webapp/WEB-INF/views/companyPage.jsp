@@ -136,11 +136,11 @@
 
     <!-- 사이드바 -->
     <div class="sidebar">
-        <h2 onclick="location.href='uploadPost.jsp'">⚙ Son-jab-ee</h2>
-        <a href="uploadPost.jsp" class="nav-item">공고 업로드</a>
-        <a href="myPosts.jsp" class="nav-item">올린 공고</a>
-        <a href="companyPage.jsp" class="nav-item active">마이 페이지</a>
-        <a href="logout.jsp">로그아웃</a>
+        <h2 onclick="location.href='board'">⚙ Son-jab-ee</h2>
+        <a href="post" class="nav-item">공고 업로드</a>
+        <a href="board" class="nav-item">올린 공고</a>
+        <a href="user" class="nav-item active">마이 페이지</a>
+        <a href="logout">로그아웃</a>
         <div class="user-info">구인자 🏢 해바라기 학원님</div>
     </div>
 

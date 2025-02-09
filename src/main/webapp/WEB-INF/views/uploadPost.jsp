@@ -1,4 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%
+    // 세션에서 구인자 이름 가져오기
+    String name = (String) session.getAttribute("name");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -117,46 +121,51 @@
 
     <!-- 사이드바 -->
     <div class="sidebar">
-        <h2 onclick="location.href='uploadPost.jsp'">⚙ Son-jab-ee</h2>
-        <a href="uploadPost.jsp" class="nav-item active">공고 업로드</a>
-        <a href="myPosts.jsp" class="nav-item">올린 공고</a>
+        <h2 onclick="location.href='board'">⚙ Son-jab-ee</h2>
+        <a href="post" class="nav-item active">공고 업로드</a>
+        <a href="board" class="nav-item">올린 공고</a>
         <a href="companyPage.jsp" class="nav-item">마이 페이지</a>
-        <a href="logout.jsp">로그아웃</a>
-        <div class="user-info">구인자 🏢 해바라기 학원님</div>
+        <a href="logout">로그아웃</a>
+        <div class="user-info">구인자 🏢 <%= name %>님</div>
     </div>
 
     <!-- 메인 컨텐츠 -->
     <div class="content">
         <h2 class="title">▶ 공고업로드</h2>
 
-        <form action="uploadPostProcess.jsp" method="post" class="form-container">
-            <div class="form-group">
-                <label for="companyName">회사 이름</label>
-                <input type="text" class="input-box" id="companyName" name="companyName" required>
-            </div>
+        <form action="job" method="post" class="form-container">
             <div class="form-group">
                 <label for="jobTitle">공고 제목</label>
                 <input type="text" class="input-box" id="jobTitle" name="jobTitle" required>
             </div>
             <div class="form-group">
-                <label for="jobDescription">공고 내용</label>
-                <input type="text" class="input-box" id="jobDescription" name="jobDescription" required>
+                <label for="jobContent">공고 내용</label>
+                <input type="text" class="input-box" id="jobContent" name="jobContent" required>
             </div>
             <div class="form-group">
-                <label for="jobType">업무 유형</label>
-                <input type="text" class="input-box" id="jobType" name="jobType" required>
+                <label for="jobCategory">업무 유형</label>
+                <input type="text" class="input-box" id="jobCategory" name="jobCategory" required>
             </div>
             <div class="form-group">
                 <label for="salary">급여</label>
                 <input type="text" class="input-box" id="salary" name="salary" required>
             </div>
             <div class="form-group">
+                <label for="schedule">근무일정</label>
+                <input type="text" class="input-box" id="schedule" name="schedule" required>
+            </div>
+            <div class="form-group">
                 <label for="location">지역</label>
                 <input type="text" class="input-box" id="location" name="location" required>
             </div>
             <div class="form-group">
-                <label for="priority">우대사항</label>
-                <input type="text" class="input-box" id="priority" name="priority">
+                <label for="additionalInfo">기타정보</label>
+                <input type="text" class="input-box" id="additionalInfo" name="additionalInfo">
+            </div>
+            
+			<div class="form-group">
+           		<label for="applicationDeadline">기한날짜 &nbsp;</label>
+            	<input type="date" class="input-box" name="applicationDeadline" required>
             </div>
 
             <button type="submit" class="btn">공고 올리기</button>
