@@ -48,6 +48,41 @@
 <br><br>
 
 ## 🛠️ 기술스택
+
+<!-- 
+<div> Frontend : 
+    <img src="https://img.shields.io/badge/JSP-00205B?style=for-the-badge&logo=apache&logoColor=white"> 
+    <img src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white"> 
+    <img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white"> 
+    <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white"> 
+</div>
+
+<div> Backend : 
+    <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"> 
+    <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> 
+</div>
+
+<div> <strong> IDE : </strong>
+    <img src="https://img.shields.io/badge/Eclipse-2C2255?style=for-the-badge&logo=eclipse&logoColor=white"> 
+    <img src="https://img.shields.io/badge/IntelliJ-000000?style=for-the-badge&logo=intellijidea&logoColor=white"> 
+</div>
+
+<div> <strong> 시스템 환경 : </strong>
+    <img src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white"> 
+    <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black"> 
+</div>
+
+<div> <strong> 개발 도구 : </strong>
+    <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white"> 
+    <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white"> 
+</div>
+
+<div> <strong> 협업 툴 : </strong>
+    <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white"> 
+    <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white"> 
+</div>
+--> 
+
 <div align=center> 
     <img src="https://img.shields.io/badge/JSP-00205B?style=for-the-badge&logo=apache&logoColor=white"> 
     <img src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white"> 
@@ -61,30 +96,60 @@
 
 <br><br>
 
-## 💡 기능 소개
+## 💡 주요 기능 소개
 
-구직자(User)
-- 로그인
-- 회원 가입
-- 회원 정보 수정
-- 회원 정보 삭제
-- 공고 조회
-- 공고 지원
-- 공고 지원 현황 확인
+<table>
+    <tr>
+        <td rowspan="3"><strong>공통</strong></td>
+        <td><strong>로그인</strong></td>
+        <td>이메일과 비밀번호를 입력하여 로그인합니다.<br>
+        로그인 성공 시, Session에 사용자 정보를 저장하여 인증을 유지합니다.</td>
+    </tr>
+    <tr>
+        <td><strong>회원 가입</strong></td>
+        <td>구인자(Company)와 구직자(User)를 구분하여 새 계정을 생성합니다.</td>
+    </tr>
+    <tr>
+        <td><strong>회원 정보 수정</strong></td>
+        <td>회원 정보를 수정합니다.</td>
+    </tr>
+    <tr>
+        <td rowspan="3"><strong>구직자</strong></td>
+        <td><strong>공고 조회</strong></td>
+        <td>모든 공고 리스트를 조회합니다.</td>
+    </tr>
+    <tr>
+        <td><strong>공고 지원</strong></td>
+        <td>공고에 지원할 수 있습니다.</td>
+    </tr>
+    <tr>
+        <td><strong>지원한 공고 리스트 확인</strong></td>
+        <td>자신이 지원한 공고 리스트를 확인할 수 있습니다.</td>
+    </tr>
+    <tr>
+        <td rowspan="4"><strong>구인자</strong></td>
+        <td><strong>공고 등록</strong></td>
+        <td>공고를 등록할 수 있습니다.</td>
+    </tr>
+    <tr>
+        <td><strong>등록한 공고 조회</strong></td>
+        <td>자신이 등록한 공고 리스트를 조회할 수 있습니다.</td>
+    </tr>
+    <tr>
+        <td><strong>공고 수정 및 삭제</strong></td>
+        <td>등록한 공고를 수정하거나 삭제할 수 있습니다.</td>
+    </tr>
+</table>
 
-구인자(Company)
-- 로그인
-- 회원 가입
-- 회사 정보 수정
-- 회사 정보 삭제
-- 공고 등록
-- 회사가 작성한 공고 조회
-- 공고 삭제
 
 <br><br>
 
 
 ## 🏗️ 아키텍쳐
+
+<br><br>
+
+## 🔩 프로젝트 구조
 ```
 web-project/
 │── src/
@@ -140,7 +205,7 @@ web-project/
 │── README.md
 ```
 
-## 파일별 기능 소개
+### 파일별 기능 소개
 - ### controller
     - **BoardServlet** : 구직자(User)의 지원 내역 조회와 기업회원(Company)의 공고 현황 관리
     - **CompanyServlet** : 기업 정보 조회, 정보 수정, 계정 삭제
@@ -182,8 +247,62 @@ web-project/
       
 <br><br>
 
+## ERD
+![Image](https://github.com/user-attachments/assets/eaf5e5ff-a13e-4bc3-883d-ba484f32650c)
+<br>
 
+### users
 
+| **칼럼명** | **설명** | **데이터 타입** | **제약 조건** |
+| --- | --- | --- |--- |
+| id | 구직자(user) ID | INT | PRIMARY KEY |
+| name | 이름 | VARCHAR(50) | |
+| phone | 전화번호 | VARCHAR(15) | UNIQUE KEY |
+| birth_date | 생년월일 | DATE | |
+| email | 이메일 | VARCHAR(100) | UNIQUE KEY |
+| password | 비밀번호 | VARCHAR(255) | |
+| gender | 성별 | ENUM('M','F','O') | |
+| experience | 경력 사항 | TEXT | |
+| preferred_location | 선호 지역 | VARCHAR(255) | |
+| preferred_schedule | 선호 날짜 | VARCHAR(255) | |
+| preferred_job_category | 선호 직종 | VARCHAR(255) | |
+| applied_job_ids | 지원한 job id | JSON | |
+| additional_info | 추가 정보 | TEXT | |
+| created_at | 생성 시간 | TIMESTAMP | |
+| updated_at | 수정 시간 | TIMESTAMP | |
+<br>
+
+### companies
+
+| **칼럼명** | **설명** | **데이터 타입** | **제약 조건** |
+| --- | --- | --- |--- |
+| id | 구인자(company) ID | INT | PRIMARY KEY |
+| name | 이름 | VARCHAR(100) | |
+| phone | 전화번호 | VARCHAR(15) | UNIQUE KEY |
+| email | 이메일 | VARCHAR(100) | UNIQUE KEY |
+| password | 비밀번호 | VARCHAR(255) | |
+| created_at | 생성 시간 | TIMESTAMP | |
+| updated_at | 수정 시간 | TIMESTAMP | |
+<br>
+
+### jobs
+
+| **칼럼명** | **설명** | **데이터 타입** | **제약 조건** |
+| --- | --- | --- |--- |
+| id | 공고(job) ID | INT | PRIMARY KEY |
+| company_id | 구인자(company) ID | INT | FOREIGN KEY |
+| job_title | 공고 제목 | VARCHAR(100) | |
+| job_content | 공고 내용 | VARCHAR(255) |  |
+| location | 지역 | VARCHAR(255) | |
+| job_category | 업무 유형 | VARCHAR(100) |  |
+| salary | 급여 | VARCHAR(100) | |
+| schedule | 근무 일정 | ENUM('평일','주말','상관없음') | |
+| additional_info | 기타 정보 | TEXT | |
+| application_deadline | 기한 날짜 | DATE | |
+| created_at | 생성 시간 | TIMESTAMP | |
+| updated_at | 수정 시간 | TIMESTAMP | |
+
+<br><br>
 
 ## ✳ 추가할 기능(고도화)
 - 로그인, 회원가입 비밀번호 암호화
