@@ -33,24 +33,14 @@ public class JobServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String pathInfo = request.getPathInfo();
     	try {
-	    	if (pathInfo == null || pathInfo.equals("/")) {
-	    		// /job 요청, 모든 job 반환
-	            // JobDAO의 getAllJobs 메서드 호출하여 전체 job 목록을 가져옴
-	            List<Job> jobs = jobDAO.getAllJobs();
-	            // request에 jobs 목록을 추가하여 JSP로 전달
-	            request.setAttribute("jobs", jobs);
-	            // jobList.jsp로 forward하여 결과 표시
-	            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/jobList.jsp");
-	            dispatcher.forward(request, response);
-	    	} else {
-	    		// job/{id}요청, 특정 job 반환
-	    		int jobId = Integer.parseInt(pathInfo.substring(1));
-	    		// job 반환
-	    		Job job = jobDAO.getOneJob(jobId);
-	    		request.setAttribute("job", job);
-	            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/jobList.jsp");
-	            dispatcher.forward(request, response);
-	    	}
+    		// /job 요청, 모든 job 반환
+            // JobDAO의 getAllJobs 메서드 호출하여 전체 job 목록을 가져옴
+            List<Job> jobs = jobDAO.getAllJobs();
+            // request에 jobs 목록을 추가하여 JSP로 전달
+            request.setAttribute("jobs", jobs);
+            // jobList.jsp로 forward하여 결과 표시
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/jobList.jsp");
+            dispatcher.forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred while fetching job data.");
@@ -84,51 +74,28 @@ public class JobServlet extends HttpServlet {
 	            jobDAO.createJob(job);
 	            response.sendRedirect("board");
 	        } else {
-	        	Job job = new Job();
-	        	job.setJobTitle(request.getParameter("jobTitle"));
-	        	job.setJobContent(request.getParameter("jobContent"));
-	            job.setLocation(request.getParameter("location"));
-	            job.setJobCategory(request.getParameter("jobCategory"));
-	            job.setSalary(request.getParameter("salary"));
-	            job.setSchedule(request.getParameter("schedule"));
-	            job.setAdditionalInfo(request.getParameter("additionalInfo"));
-	            job.setApplicationDeadline(TimestampConverter.convertStringToDate(request.getParameter("applicationDeadline")));
-				System.out.println(job);
-	            jobDAO.updateJobInfo(Integer.parseInt(pathInfo.substring(1)), job);
+	        	int jobId = Integer.parseInt(pathInfo.substring(1));
+	        	String action = request.getParameter("action");
+	        	if ("delete".equals(action)) {
+	        		jobDAO.deleteJob(jobId);
+	        	}
+	        	else {
+		        	Job job = new Job();
+		        	job.setJobTitle(request.getParameter("jobTitle"));
+		        	job.setJobContent(request.getParameter("jobContent"));
+		            job.setLocation(request.getParameter("location"));
+		            job.setJobCategory(request.getParameter("jobCategory"));
+		            job.setSalary(request.getParameter("salary"));
+		            job.setSchedule(request.getParameter("schedule"));
+		            job.setAdditionalInfo(request.getParameter("additionalInfo"));
+		            job.setApplicationDeadline(TimestampConverter.convertStringToDate(request.getParameter("applicationDeadline")));
+		            jobDAO.updateJobInfo(jobId, job);
+	        	}
 	            response.sendRedirect("/son-job-ee/board");
 	        }
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-    
-    // job 삭제 맞는지 확인 플리즈
-    @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String pathInfo = request.getPathInfo();
-
-        if (pathInfo == null || pathInfo.equals("/")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid job ID");
-            return;
-        }
-
-        try {
-            int jobId = Integer.parseInt(pathInfo.substring(1));
-            
-            boolean isDeleted = jobDAO.deleteJob(jobId);
-
-            if (isDeleted) {
-                response.setStatus(HttpServletResponse.SC_NO_CONTENT); // 204: 성공적으로 삭제됨
-            } else {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Job not found or already deleted.");
-            }
-
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid job ID format");
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred while deleting job.");
-        }
-    }
 
 }
