@@ -59,7 +59,9 @@ public class SignUpServlet extends HttpServlet {
         		user.setBirthDate(TimestampConverter.convertStringToDate(request.getParameter("userBirth")));
         		user.setGender(request.getParameter("userGender"));
         		user.setExperience(request.getParameter("userExperience"));
-        		
+        		user.setPreferredLocation(request.getParameter("preferredLocation"));
+        		user.setPreferredSchedule(request.getParameter("preferredDate"));
+        		user.setPreferredJobCategory(request.getParameter("preferredJob"));
         		userDAO.userSign(user);
         		
     			response.sendRedirect("login");

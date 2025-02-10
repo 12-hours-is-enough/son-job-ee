@@ -41,9 +41,9 @@ public class UserDAO {
 				user.setPassword(rs.getString("password"));
 				user.setGender(rs.getString("gender"));
 				user.setExperience(rs.getString("experience"));
-				user.setPreferredLocation(User.convertJsonToList(rs.getString("preferred_location")));
-				user.setPreferredSchedule(User.convertJsonToList(rs.getString("preferred_schedule")));
-				user.setPreferredJobCategory(User.convertJsonToList(rs.getString("preferred_job_category")));
+				user.setPreferredLocation(rs.getString("preferred_location"));
+				user.setPreferredSchedule(rs.getString("preferred_schedule"));
+				user.setPreferredJobCategory(rs.getString("preferred_job_category"));
 				user.setAppliedJobIds(User.convertJsonToIntegerList(rs.getString("applied_job_ids")));
 				user.setAdditionalInfo(rs.getString("additional_info"));
 				user.setCreatedAt(rs.getTimestamp("created_at"));
@@ -127,9 +127,9 @@ public class UserDAO {
 			pstmt.setString(5, user.getPassword());
 			pstmt.setString(6, user.getGender());
 			pstmt.setString(7, user.getExperience());
-			pstmt.setString(8, new ObjectMapper().writeValueAsString(user.getPreferredLocation()));
-			pstmt.setString(9, new ObjectMapper().writeValueAsString(user.getPreferredSchedule()));
-			pstmt.setString(10, new ObjectMapper().writeValueAsString(user.getPreferredJobCategory()));
+			pstmt.setString(8, user.getPreferredLocation());
+			pstmt.setString(9, user.getPreferredSchedule());
+			pstmt.setString(10, user.getPreferredJobCategory());
 			pstmt.setString(11, new ObjectMapper().writeValueAsString(user.getAppliedJobIds()));
 			pstmt.setString(12, user.getAdditionalInfo());
 
@@ -161,16 +161,16 @@ public class UserDAO {
 			pstmt.setString(4, userDto.getPassword());
 			pstmt.setString(5, userDto.getGender());
 			pstmt.setString(6, userDto.getExperience());
-			pstmt.setString(7, objectMapper.writeValueAsString(userDto.getPreferredLocation())); // JSON 변환
-			pstmt.setString(8, objectMapper.writeValueAsString(userDto.getPreferredSchedule()));
-			pstmt.setString(9, objectMapper.writeValueAsString(userDto.getPreferredJobCategory()));
+			pstmt.setString(7, userDto.getPreferredLocation()); 
+			pstmt.setString(8, userDto.getPreferredSchedule());
+			pstmt.setString(9, userDto.getPreferredJobCategory());
 			pstmt.setString(10, userDto.getAdditionalInfo());
 			pstmt.setInt(11, userId);
 
 			int rowsAffected = pstmt.executeUpdate();
 			return rowsAffected > 0; // 성공 시 true 반환
 
-		} catch (SQLException | com.fasterxml.jackson.core.JsonProcessingException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Database error occurred while updating User info", e);
 		} finally {

@@ -110,8 +110,38 @@
            		<label for="userId">생년월일 &nbsp;</label>
             	<input type="date" class="input-box" name="userBirth" required>
             </div>
-            
-            
+
+            <div class="form-group">
+                <label for="preferredDate">선호 날짜 &nbsp;</label>
+                <select class="input-box" name="preferredDate" required>
+                    <option value="평일">평일</option>
+                    <option value="주말">주말</option>
+                    <option value="상관없음">상관없음</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="preferredJob">선호 직종 &nbsp;</label>
+                <select class="input-box" name="preferredJob" required>
+                    <option value="경비">경비</option>
+                    <option value="운전">운전</option>
+                    <option value="배달">배달</option>
+                    <option value="청소">청소</option>
+                    <option value="강사">강사</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="preferredLocation">선호 지역 &nbsp;</label>
+                <select class="input-box" name="preferredLocation" required>
+                    <option value="서울">서울</option>
+                    <option value="부산">부산</option>
+                    <option value="대구">대구</option>
+                    <option value="인천">인천</option>
+                    <option value="광주">광주</option>
+                </select>
+            </div>
+
             <div class="radio-group">
                 <label><input type="radio" name="userGender" value="F"> 여자</label>
                 <label><input type="radio" name="userGender" value="M"> 남자</label>
