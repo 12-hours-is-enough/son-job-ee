@@ -212,13 +212,11 @@ web-project/
 ### 파일별 기능 소개
 - ### controller
     - **BoardServlet** : 구직자(User)의 지원 내역 조회와 기업회원(Company)의 공고 현황 관리
-    - **CompanyServlet** : 기업 정보 조회, 정보 수정, 계정 삭제
     - **JobServlet** : 공고 조회, 등록, 수정, 삭제
     - **LoginServlet** : 로그인 기능
     - **LogoutServlet** : 로그아웃 기능
     - **PostServlet** : 공고 등록 페이지로 이동
     - **SignUpServlet** : 회원 가입 처리
-    - **UserServlet** : 정보 조회, 정보 수정, 지원 공고 업데이트, 계정 삭제
 
 - ### dao
     - **CompanyDAO** : 기업 회원 관련 데이터베이스 작업 처리
