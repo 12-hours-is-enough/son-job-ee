@@ -3,7 +3,6 @@ package com.sonjobee.controller;
 import java.io.IOException;
 
 import com.sonjobee.dao.JobDAO;
-import com.sonjobee.model.Job;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

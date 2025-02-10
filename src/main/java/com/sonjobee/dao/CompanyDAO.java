@@ -62,7 +62,7 @@ public class CompanyDAO {
 
 			rs = pstmt.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
 				company = new Company();
 				company.setId(rs.getInt("id"));
 				company.setEmail(rs.getString("email"));

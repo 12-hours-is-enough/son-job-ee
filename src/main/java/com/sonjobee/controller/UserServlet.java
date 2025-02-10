@@ -1,8 +1,6 @@
 package com.sonjobee.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.io.PrintWriter;
 
 import com.sonjobee.dao.CompanyDAO;
 import com.sonjobee.dao.UserDAO;
@@ -10,7 +8,6 @@ import com.sonjobee.model.Company;
 import com.sonjobee.model.User;
 import com.sonjobee.util.TimestampConverter;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -41,12 +38,12 @@ public class UserServlet extends HttpServlet {
 		}
 
 		try {
-			if (session.getAttribute("usertype").equals("user")) {
+			if ("user".equals(session.getAttribute("usertype"))) {
 				User user = userDAO.getUserInfo(Integer.parseInt(request.getParameter("id")));
 
 				request.setAttribute("userInfo", user);
 				request.getRequestDispatcher("/WEB-INF/views/userPage.jsp").forward(request, response);
-			} else if (session.getAttribute("usertype").equals("company")) {
+			} else if ("company".equals(session.getAttribute("usertype"))) {
 				Company company = companyDAO.getOneCompany(Integer.parseInt(request.getParameter("id")));
 
 				request.setAttribute("companyInfo", company);
@@ -55,7 +52,6 @@ public class UserServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	// POST
@@ -64,7 +60,6 @@ public class UserServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		String action = request.getParameter("action");
-		
 		Integer userId = (Integer) request.getSession().getAttribute("id"); // 세션에서 userId 가져오기
 
 		if ("signup".equals(action)) {
@@ -84,24 +79,6 @@ public class UserServlet extends HttpServlet {
 
 	}
 
-
-	// user 삭제
-	@Override
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// String email = request.getParameter("email"); 기존 코드
-		HttpSession session = request.getSession();
-		int userId = (Integer) session.getAttribute("id");
-
-		try {
-			userDAO.deleteUser(userId);
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-					"Database error occurred while fetching job data.");
-		}
-	}
-
 	// user 생성
 	private void userSign(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -117,7 +94,6 @@ public class UserServlet extends HttpServlet {
 		user.setPreferredSchedule(request.getParameter("preferredDate"));
 		user.setPreferredJobCategory(request.getParameter("preferredJob"));
 		user.setAdditionalInfo(request.getParameter("additionalInfo"));
-		System.out.println(user);
 		try {
 			userDAO.userSign(user);
 			response.sendRedirect("job");
@@ -147,7 +123,6 @@ public class UserServlet extends HttpServlet {
 			user.setPreferredJobCategory(request.getParameter("preferredJobCategory"));
 			user.setAdditionalInfo(request.getParameter("additionalInfo"));
 			
-			System.out.println(user);
 		    // DB 업데이트
 		    boolean success = userDAO.updateUserInfo(userId, user);
 
@@ -158,14 +133,11 @@ public class UserServlet extends HttpServlet {
 		    }
 		} catch (Exception e) {
 		    e.printStackTrace();  // 콘솔에 에러 로그 출력
-		    System.out.println("뭐지");
 	}}
 
 	// user applied job 수정
 	private void updateAppliedJob(HttpServletRequest request, HttpServletResponse response, int userId, int jobId)
 			throws ServletException, IOException {
 				userDAO.updateUserAppliedList(userId, jobId);
-
 	}	 
-
 }

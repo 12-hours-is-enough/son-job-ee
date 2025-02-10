@@ -21,7 +21,6 @@ import jakarta.servlet.http.HttpSession;
 public class MyPage extends HttpServlet {
 	private CompanyDAO companyDAO;
 	private UserDAO userDAO;
-    
 	   
 	public void init() throws ServletException {
 		companyDAO = new CompanyDAO();
@@ -36,15 +35,13 @@ public class MyPage extends HttpServlet {
 			return ;
 		} 
 		
-		
-		if(session.getAttribute("usertype").equals("user")) {
+		if("user".equals(session.getAttribute("usertype"))) {
 			int id = (Integer) session.getAttribute("id");
 			
 			User user = userDAO.getUserInfo(id);
 			request.setAttribute("user", user);
 
 			request.getRequestDispatcher("/WEB-INF/views/userPage.jsp").forward(request, response);
-
 		} else {
 			int id = (Integer) session.getAttribute("id");
 			
@@ -52,10 +49,6 @@ public class MyPage extends HttpServlet {
 			request.setAttribute("company", company);
 			
 			request.getRequestDispatcher("/WEB-INF/views/companyPage.jsp").forward(request, response);
-
 		}
-		
 	}
-	
-
 }

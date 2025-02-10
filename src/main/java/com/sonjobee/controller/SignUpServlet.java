@@ -36,7 +36,7 @@ public class SignUpServlet extends HttpServlet {
 		if (session.getAttribute("islogin") != null) {
 			response.sendRedirect("job");
 		} else {
-			if (userType.equals("user")) {
+			if ("user".equals(userType)) {
 				request.getRequestDispatcher("/WEB-INF/views/userSignup.jsp").forward(request, response);
 			} else if(userType.equals("company")) {
 				request.getRequestDispatcher("/WEB-INF/views/companySignup.jsp").forward(request, response);
@@ -65,14 +65,13 @@ public class SignUpServlet extends HttpServlet {
         		userDAO.userSign(user);
         		
     			response.sendRedirect("login");
-        	} else if (userType.equals("company")) {
+        	} else if ("company".equals(userType)) {
         		Company company = new Company();
         		
         		company.setEmail(request.getParameter("companyEmail"));
         		company.setName(request.getParameter("companyName"));
         		company.setPhone(request.getParameter("companyPhone"));
         		company.setPassword(request.getParameter("companyPw"));
-        		
         		companyDAO.signUpCompany(company);
         		
     			response.sendRedirect("login");
@@ -80,6 +79,5 @@ public class SignUpServlet extends HttpServlet {
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
-    	
 	}
 }

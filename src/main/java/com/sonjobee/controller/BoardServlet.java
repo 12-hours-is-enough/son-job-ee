@@ -50,7 +50,7 @@ public class BoardServlet extends HttpServlet {
 		int id = (Integer)session.getAttribute("id");  // id 값
 		String userType = (String) session.getAttribute("usertype");  // 유저 타입
 		
-		if(userType.equals("user")) {
+		if ("user".equals(userType)) {
 			// jobDAO에서 해당 jobId 리스트로 Job 전체 정보 가져오기
 			List<Job> appliedJobs = jobDAO.getAppliedJobs(id);
 
@@ -58,7 +58,7 @@ public class BoardServlet extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/myStatus.jsp");
 			dispatcher.forward(request, response);
 		}
-		else if (userType.equals("company")) {
+		else if ("company".equals(userType)) {
 			String pathInfo = request.getPathInfo();
 			
 			if (pathInfo == null || pathInfo.equals("/")) {
@@ -74,7 +74,6 @@ public class BoardServlet extends HttpServlet {
 				request.getRequestDispatcher("/WEB-INF/views/modifyPost.jsp").forward(request, response);
 			}
 		}
-		
 	}
 	  
 	@Override
