@@ -136,7 +136,7 @@
         <h2 onclick="location.href='job'">⚙ Son-jab-ee</h2>
         <a href="job" class="nav-item">공고 리스트</a>
         <a href="board" class="nav-item active">지원 현황</a>
-        <a href="user" class="nav-item">마이 페이지</a>
+        <a href="mypage" class="nav-item">마이 페이지</a>
         <a href="logout">로그아웃</a>
 		<div class="user-info">구직자 🟢 <%= name %>님</div>
     </div>

@@ -1,6 +1,7 @@
 package com.sonjobee.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.io.PrintWriter;
 
 import com.sonjobee.dao.CompanyDAO;
@@ -54,8 +55,8 @@ public class UserServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
 
+	}
 
 	// POST
 	@Override
@@ -82,6 +83,7 @@ public class UserServlet extends HttpServlet {
 		}
 
 	}
+
 
 	// user 삭제
 	@Override
@@ -126,55 +128,44 @@ public class UserServlet extends HttpServlet {
 	}
 
 	// user info 수정
+
 	private void updateUserInfo(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		Integer userId = (Integer) session.getAttribute("id");
+		try {
+		    HttpSession session = request.getSession();
+		    Integer userId = (Integer) session.getAttribute("id");
+			User user = new User();
+			user.setName(request.getParameter("name"));
+			user.setPhone(request.getParameter("phone"));
+			user.setBirthDate(TimestampConverter.convertStringToDate(request.getParameter("birthDate")));
+			user.setEmail(request.getParameter("email"));
+			user.setPassword(request.getParameter("password"));
+			user.setGender(request.getParameter("gender"));
+			user.setExperience(request.getParameter("experience"));
+			user.setPreferredLocation(request.getParameter("preferredLocation"));
+			user.setPreferredSchedule(request.getParameter("preferredSchedule"));
+			user.setPreferredJobCategory(request.getParameter("preferredJobCategory"));
+			user.setAdditionalInfo(request.getParameter("additionalInfo"));
+			
+			System.out.println(user);
+		    // DB 업데이트
+		    boolean success = userDAO.updateUserInfo(userId, user);
 
-//		// pw가 맞는지 확인 후 실행
-//		User existUser = userDAO.getUserInfo(userId);
-//		String inputPw = request.getParameter("pw");
-//
-//		// pw 검증
-//		if (inputPw == null || !existUser.getPassword().equals(inputPw)) {
-//			response.sendRedirect("userPage.jsp?message=비밀번호가 일치하지 않습니다.");
-//			return;
-//		}
-
-		// 사용자 정보 가져오기
-		User user = new User();
-		user.setName(request.getParameter("name"));
-		user.setPhone(request.getParameter("phone"));
-		user.setBirthDate(TimestampConverter.convertStringToTimestamp(request.getParameter("birthDate")));
-
-		// 새 비밀번호 입력 시 업데이트
-		String newPassword = request.getParameter("password");
-//		user.setPassword(newPassword != null && !newPassword.isEmpty() ? newPassword : existUser.getPassword());
-		user.setPassword(request.getParameter("password"));
-		user.setGender(request.getParameter("gender"));
-		user.setExperience(request.getParameter("experience"));
-		user.setPreferredLocation(request.getParameter("preferredLocation"));
-		user.setPreferredSchedule(request.getParameter("preferredSchedule"));
-		user.setPreferredJobCategory(request.getParameter("preferredJobCategory"));
-		user.setAdditionalInfo(request.getParameter("additionalInfo"));
-
-		// DB 업데이트
-		boolean success = userDAO.updateUserInfo(userId, user);
-
-		if (success) {
-			response.sendRedirect("userPage.jsp?message=정보가 성공적으로 업데이트되었습니다.");
-		} else {
-			response.sendRedirect("userPage.jsp?message=정보 업데이트에 실패했습니다.");
-		}
-	}
+		    if (success) {
+		        response.sendRedirect("mypage"); // 새 요청 전송 (데이터 유지 X)
+		    } else {
+		    	System.out.println("fail update");
+		    }
+		} catch (Exception e) {
+		    e.printStackTrace();  // 콘솔에 에러 로그 출력
+		    System.out.println("뭐지");
+	}}
 
 	// user applied job 수정
 	private void updateAppliedJob(HttpServletRequest request, HttpServletResponse response, int userId, int jobId)
 			throws ServletException, IOException {
+				userDAO.updateUserAppliedList(userId, jobId);
 
-		userDAO.updateUserAppliedList(userId, jobId);
-
-		 
-	}
+	}	 
 
 }

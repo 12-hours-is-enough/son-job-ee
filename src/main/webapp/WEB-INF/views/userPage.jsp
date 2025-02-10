@@ -6,13 +6,8 @@
 <%
 	//세션에서 로그인된 사용자의 ID 가져오기
 	Integer userId = (Integer) session.getAttribute("id");
-	// Integer userId = 1;
-	
-	// 유저 정보 가져오기
-	User user = null;
-	if (userId != null) {
-	    user = UserDAO.getUserInfo(userId);
-	}
+	String name = (String) session.getAttribute("name");
+	User user = (User) request.getAttribute("user");
 %>
 
 <!DOCTYPE html>
@@ -142,54 +137,88 @@
         <h2 onclick="location.href='job'">⚙ Son-jab-ee</h2>
         <a href="job" class="nav-item">공고 리스트</a>
         <a href="board" class="nav-item">지원 현황</a>
-        <a href="user" class="nav-item active">마이 페이지</a>
+        <a href="mypage" class="nav-item active">마이 페이지</a>
         <a href="logout">로그아웃</a>
-        <div class="user-info">구직자 🟢 홍길동님</div>
+        <div class="user-info">구직자 🟢 <%= name %>님</div>
     </div>
 
     <!-- 메인 컨텐츠 -->
     <div class="content">
         <h2 class="title">▶ 마이페이지</h2>
 		
-        <form action="userUpdateProcess.jsp" method="post" class="form-container">
+        <form action="user" method="post" class="form-container">
             <div class="form-group">
                 <label for="userEmail">이메일</label>
-                <input type="email" class="input-box" id="userEmail" name="userEmail" 
-                       placeholder="이메일" value="<%= (user != null) ? user.getEmail() : "" %>" readonly>
+                <input type="email" class="input-box" id="userEmail" name="email" 
+                       placeholder="이메일" value="<%= (user != null) ? user.getEmail() : "" %>" required>
             </div>
             <div class="form-group">
                 <label for="userPw">비밀번호</label>
-                <input type="password" class="input-box" id="userPw" name="userPw" 
+                <input type="password" class="input-box" id="userPw" name="password" 
                        placeholder="비밀번호" value="<%= (user != null) ? user.getPassword() : "" %>" required>
             </div>
             <div class="form-group">
                 <label for="userName">이름</label>
-                <input type="text" class="input-box" id="userName" name="userName" 
+                <input type="text" class="input-box" id="userName" name="name" 
                        placeholder="이름" value="<%= (user != null) ? user.getName() : "" %>" required>
             </div>
             <div class="form-group">
                 <label for="userPhone">전화번호</label>
-                <input type="text" class="input-box" id="userPhone" name="userPhone" 
+                <input type="text" class="input-box" id="userPhone" name="phone" 
                        placeholder="전화번호" value="<%= (user != null) ? user.getPhone() : "" %>" required>
             </div>
             <div class="form-group">
                 <label for="userBirth">생년월일</label>
-                <input type="date" class="input-box" id="userBirth" name="userBirth" 
+                <input type="date" class="input-box" id="userBirth" name="birthDate" 
                        value="<%= (user != null) ? user.getBirthDate() : "" %>" required>
             </div>
 
             <div class="form-group"> 
                 <label>성별</label>
                 <div class="radio-group">
-                    <label><input type="radio" name="userGender" value="female" 
-                                  <%= (user != null && "female".equals(user.getGender())) ? "checked" : "" %> > 여자</label>
-                    <label><input type="radio" name="userGender" value="male" 
-                                  <%= (user != null && "male".equals(user.getGender())) ? "checked" : "" %> > 남자</label>
+                    <label><input type="radio" name="gender" value="F" 
+                                  <%= (user != null && "F".equals(user.getGender())) ? "checked" : "" %> > 여자</label>
+                    <label><input type="radio" name="gender" value="M" 
+                                  <%= (user != null && "M".equals(user.getGender())) ? "checked" : "" %> > 남자</label>
                 </div>
+            </div>
+            
+            
+            <div class="form-group">
+                <label for="preferredSchedule">선호 날짜 &nbsp;</label>
+                <select class="input-box" name="preferredDate" required>
+                    <option value="평일">평일</option>
+                    <option value="주말">주말</option>
+                    <option value="상관없음">상관없음</option>
+
+                </select>
             </div>
 
             <div class="form-group">
-                <label for="userExperience">경력사항</label>
+                <label for="preferredJobCategory">선호 직종 &nbsp;</label>
+                <select class="input-box" name="preferredJob" required>
+                    <option value="경비">경비</option>
+                    <option value="운전">운전</option>
+                    <option value="배달">배달</option>
+                    <option value="청소">청소</option>
+                    <option value="강사">강사</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="preferredLocation">선호 지역 &nbsp;</label>
+                <select class="input-box" name="preferredLocation" required>
+                    <option value="서울">서울</option>
+                    <option value="부산">부산</option>
+                    <option value="대구">대구</option>
+                    <option value="인천">인천</option>
+                    <option value="광주">광주</option>
+                </select>
+            </div>
+            
+
+            <div class="form-group">
+                <label for="experience">경력사항</label>
                 <textarea class="input-box" id="userExperience" name="userExperience"
                           placeholder="경력사항"><%= (user != null) ? user.getExperience() : "" %></textarea>
             </div>
