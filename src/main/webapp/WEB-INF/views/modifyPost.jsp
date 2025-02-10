@@ -127,7 +127,7 @@
         <h2 onclick="location.href='board'">⚙ Son-jab-ee</h2>
         <a href="post" class="nav-item">공고 업로드</a>
         <a href="board" class="nav-item">올린 공고</a>
-        <a href="user" class="nav-item">마이 페이지</a>
+        <a href="mypage" class="nav-item">마이 페이지</a>
         <a href="logout">로그아웃</a>
         <div class="user-info">구인자 🏢 <%= name %>님</div>
     </div>

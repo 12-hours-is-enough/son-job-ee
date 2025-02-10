@@ -152,7 +152,7 @@ public class UserDAO {
 		try {
 			conn = DBConnection.getConnection();
 			String sql = "UPDATE users SET name = ?, phone = ?, birth_date = ?, password = ?, gender = ?, experience = ?, "
-					+ "preferred_location = ?, preferred_schedule = ?, preferred_job_category = ?, additional_info = ?, updated_at = NOW() "
+					+ "preferred_location = ?, preferred_schedule = ?, preferred_job_category = ?, additional_info = ?, updated_at = NOW(), email =?"
 					+ "WHERE id = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userDto.getName());
@@ -165,17 +165,19 @@ public class UserDAO {
 			pstmt.setString(8, userDto.getPreferredSchedule());
 			pstmt.setString(9, userDto.getPreferredJobCategory());
 			pstmt.setString(10, userDto.getAdditionalInfo());
-			pstmt.setInt(11, userId);
+			pstmt.setString(11, userDto.getEmail());
+			pstmt.setInt(12, userId);
 
-			int rowsAffected = pstmt.executeUpdate();
-			return rowsAffected > 0; // 성공 시 true 반환
-
+			if (pstmt.executeUpdate() != 0) {
+				return true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Database error occurred while updating User info", e);
 		} finally {
 			DBConnection.close(conn, pstmt, null);
 		}
+		return false;
 	}
 
 	// User의 applied 목록 수정

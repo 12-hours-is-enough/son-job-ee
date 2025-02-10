@@ -65,6 +65,7 @@ public class CompanyDAO {
 			while (rs.next()) {
 				company = new Company();
 				company.setId(rs.getInt("id"));
+				company.setEmail(rs.getString("email"));
 				company.setName(rs.getString("name"));
 				company.setPhone(rs.getString("phone"));
 				company.setPassword(rs.getString("password"));
@@ -108,7 +109,7 @@ public class CompanyDAO {
 	}
 
 	// modify company info
-	public boolean updateCompany(Company co) throws SQLException {
+	public boolean updateCompany(int companyId, Company co) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -121,7 +122,7 @@ public class CompanyDAO {
 			pstmt.setString(2, co.getPhone());
 			pstmt.setString(3, co.getEmail());
 			pstmt.setString(4, co.getPassword());
-			pstmt.setInt(6, co.getId());
+			pstmt.setInt(5, companyId);
 
 			if (pstmt.executeUpdate() != 0) {
 				return true;
