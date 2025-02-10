@@ -191,21 +191,31 @@
 
         <script>
 		    function applyJob(jobId) {
-		        fetch('/apply', {
-		            method: 'PUT', // PUT 요청 전송
+		    	alert(1);
+		    	
+		    	let formData = new URLSearchParams();
+		    	formData.append("action", "updateAppliedJob");
+		    	formData.append("jobId", jobId);
+		        console.log("지원하기 버튼 클릭됨! jobId:", jobId, "action: updateAppliedJob");
+		        
+		        fetch('/son-job-ee/user', {
+		            method: 'POST', // POST 요청 전송
 		            headers: {
-		                'Content-Type': 'application/json' // JSON 데이터 전송
+		            	'Content-Type': 'application/x-www-form-urlencoded'
 		            },
-		            body: JSON.stringify({ jobId: jobId }) // jobId를 JSON 데이터로 전송
+		            body: formData.toString() // URL 인코딩된 데이터 전송
 		        })
-		        .then(response => response.json()) // 응답을 JSON으로 변환
+		        .then(response => response.text()) // JSON 대신 TEXT로 받음
 		        .then(data => {
-		            if (data.success) {
-		                alert('지원이 완료되었습니다!');
-		            } else {
-		                alert('지원 실패: ' + data.message);
-		                // 공고 리스트로 다시 이동?
+		            console.log("서버 응답:", data);
+		            if(!data) {
+		            	alert("지원이 완료되었습니다."); // 응답 메시지 출력
 		            }
+		            else {
+		            	alert("지원에 실패하였습니다."); // 응답 메시지 출력
+		           	}
+		            
+		            window.location.href = "board"; // 지원 현황 페이지(myStatus.jsp)로 이동
 		        })
 		        .catch(error => console.error('Error:', error));
 		    }
