@@ -31,7 +31,7 @@ public class UserDAO {
 			pstmt.setInt(1, userId);
 			rs = pstmt.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
 				user = new User();
 				user.setId(rs.getInt("id"));
 				user.setName(rs.getString("name"));

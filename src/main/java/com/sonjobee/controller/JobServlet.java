@@ -1,12 +1,9 @@
 package com.sonjobee.controller;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
-import com.sonjobee.dao.CompanyDAO;
 import com.sonjobee.dao.JobDAO;
-import com.sonjobee.dao.UserDAO;
 import com.sonjobee.model.Job;
 import com.sonjobee.util.TimestampConverter;
 
@@ -45,7 +42,6 @@ public class JobServlet extends HttpServlet {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred while fetching job data.");
         }
-    			
     }
     
     // job 생성 및 수정

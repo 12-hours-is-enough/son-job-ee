@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
     	String userType = request.getParameter("userType");
     	HttpSession session = request.getSession();
     	
-    	if (userType.equals("user")) {
+    	if ("user".equals(userType)) {
     		User user = userDAO.getUserLoginInfo(request.getParameter("userId"), request.getParameter("userPw"));
     		if (user != null) {
     			session.setAttribute("usertype", "user");
@@ -53,7 +53,7 @@ public class LoginServlet extends HttpServlet {
     		} else {
     			request.getRequestDispatcher("/WEB-INF/views/loginFail.jsp").forward(request, response);
     		}
-    	} else if (userType.equals("company")) {
+    	} else if ("company".equals(userType)) {
     		Company company = companyDAO.getCompanyLoginInfo(request.getParameter("userId"), request.getParameter("userPw"));
     		if (company != null) {
     			session.setAttribute("usertype", "company");

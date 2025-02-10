@@ -59,10 +59,4 @@ public class User {
             return null;
         }
     }
-   
 }
-// Setter에서 JSON 변환 적용
-//public void setPreferredLocation(String json) { this.preferredLocation = convertJsonToList(json); }
-//public void setPreferredSchedule(String json) { this.preferredSchedule = convertJsonToList(json); }
-//public void setPreferredJobCategory(String json) { this.preferredJobCategory = convertJsonToList(json); }
-//public void setAppliedJobIds(String json) { this.appliedJobIds = convertJsonToIntegerList(json); }
