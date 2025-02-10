@@ -1,4 +1,22 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@page import="com.sonjobee.dao.CompanyDAO"%>
+<%@page import="com.sonjobee.model.Company"%>
+
+<%
+	//세션에서 로그인된 사용자의 ID 가져오기
+	// Integer companyId = (Integer) session.getAttribute("id");
+	Integer companyId = 1;
+	
+	//DAO 인스턴스 생성
+	CompanyDAO companyDAO = new CompanyDAO();
+	Company company = null;
+	
+	// 회사 정보 가져오기
+	if (companyId != null) {
+	    company = companyDAO.getOneCompany(companyId);
+	}
+%>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -148,21 +166,20 @@
 <body>
 
     <!-- 사이드바 -->
-    <div class="sidebar">
-        <h2>⚙ Son-jab-ee</h2>
-        <a href="uploadPost.jsp" class="nav-item">공고 업로드</a>
-        <a href="myPosts.jsp" class="nav-item">올린 공고</a>
-        <a href="companyPage.jsp" class="nav-item active">마이 페이지</a>
-        <a href="logout.jsp">로그아웃</a>
+        <h2 onclick="location.href='board'">⚙ Son-jab-ee</h2>
+        <a href="post" class="nav-item">공고 업로드</a>
+        <a href="board" class="nav-item">올린 공고</a>
+        <a href="mypage" class="nav-item active">마이 페이지</a>
+        <a href="logout">로그아웃</a>
         <div class="user-info">구인자 🏢 해바라기 학원님</div>
     </div>
 
     <!-- 메인 컨텐츠 -->
-    <div class="content">
-        <form action="companyUpdateProcess.jsp" method="post" class="form-container">
+        <form action="company" method="post" class="form-container">
             <div class="form-group">
-                <label for="companyId">아이디</label>
-                <input type="text" class="input-box" id="companyId" name="companyId" placeholder="회사 아이디" value="company123" required>
+                <label for="companyEmail">이메일</label>
+                <input type="email" class="input-box" id="companyEmail" name="companyEmail" 
+                       placeholder="회사 이메일" value="<%= (company != null) ? company.getEmail() : "" %>" required>
             </div>
             <div class="form-group">
                 <label for="companyPw">비밀번호</label>
@@ -172,11 +189,6 @@
                 <label for="companyName">회사 이름</label>
                 <input type="text" class="input-box" id="companyName" name="companyName" placeholder="회사 이름" value="해바라기 학원" required>
             </div>
-            <div class="form-group">
-                <label for="companyEmail">이메일</label>
-                <input type="email" class="input-box" id="companyEmail" name="companyEmail" placeholder="회사 이메일" value="company@email.com" required>
-            </div>
-            <div class="form-group">
                 <label for="companyPhone">전화번호</label>
                 <input type="text" class="input-box" id="companyPhone" name="companyPhone" placeholder="회사 전화번호" value="02-1234-5678" required>
             </div>
