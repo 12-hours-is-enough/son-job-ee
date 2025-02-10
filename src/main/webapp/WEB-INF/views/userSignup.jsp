@@ -124,31 +124,33 @@
 
             <div class="form-group">
                 <label for="preferredDate">선호 날짜 &nbsp;</label>
-                <select class="input-box" name="preferred_location" required>
-                    <option value="weekday">평일</option>
-                    <option value="weekend">주말</option>
+                <select class="input-box" name="preferredDate" required>
+                    <option value="평일">평일</option>
+                    <option value="주말">주말</option>
+                    <option value="상관없음">상관없음</option>
+
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="preferreJob">선호 직종 &nbsp;</label>
-                <select class="input-box" name="preferred_job_category" required>
-                    <option value="security">경비</option>
-                    <option value="driver">운전</option>
-                    <option value="delivery">배달</option>
-                    <option value="cleaning">청소</option>S
-                    <option value="instructor">강사</option>
+                <label for="preferredJob">선호 직종 &nbsp;</label>
+                <select class="input-box" name="preferredJob" required>
+                    <option value="경비">경비</option>
+                    <option value="운전">운전</option>
+                    <option value="배달">배달</option>
+                    <option value="청소">청소</option>
+                    <option value="강사">강사</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="preferreLocation">선호 지역 &nbsp;</label>
-                <select class="input-box" name="preferred_job_category" required>
-                    <option value="seoul">서울</option>
-                    <option value="busan">부산</option>
-                    <option value="daegu">대구</option>
-                    <option value="incheon">인천</option>
-                    <option value="gwangju">광주</option>
+                <label for="preferredLocation">선호 지역 &nbsp;</label>
+                <select class="input-box" name="preferredLocation" required>
+                    <option value="서울">서울</option>
+                    <option value="부산">부산</option>
+                    <option value="대구">대구</option>
+                    <option value="인천">인천</option>
+                    <option value="광주">광주</option>
                 </select>
             </div>
 

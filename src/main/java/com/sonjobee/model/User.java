@@ -30,9 +30,9 @@ public class User {
     private String password;			// 비밀번호
     private String gender;				// 성별
     private String experience;			// 경력
-    private List<String> preferredLocation;		// 선호 지역
-    private List<String> preferredSchedule;		// 근무 일정
-    private List<String> preferredJobCategory;	// 직업 분
+    private String preferredLocation;		// 선호 지역
+    private String preferredSchedule;		// 근무 일정
+    private String preferredJobCategory;	// 직업 분
     private List<Integer> appliedJobIds;		// 지원한 공고
     private String additionalInfo;				// 기타 사항
     private Timestamp createdAt;				// 생성 날짜
