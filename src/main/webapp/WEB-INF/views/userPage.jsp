@@ -146,7 +146,9 @@
     <div class="content">
         <h2 class="title">▶ 마이페이지</h2>
 		
-        <form action="user" method="post" class="form-container">
+        <form action="/son-job-ee/user" method="post" class="form-container">
+        	<input type="hidden" name="action" value="updateUserInfo">
+        	
             <div class="form-group">
                 <label for="userEmail">이메일</label>
                 <input type="email" class="input-box" id="userEmail" name="email" 
