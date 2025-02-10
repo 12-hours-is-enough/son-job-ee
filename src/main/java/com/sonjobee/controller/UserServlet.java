@@ -70,7 +70,7 @@ public class UserServlet extends HttpServlet {
 			// 회원가입 처리
 			userSign(request, response);
 		} else if ("updateUserInfo".equals(action)) {
-			// 사용자 전체 정보 수정
+			// 사용자 정보 수정
 			updateUserInfo(request, response);
 		} else if ("updateAppliedJob".equals(action)) {
 			// 지원 공고 업데이트
@@ -104,23 +104,21 @@ public class UserServlet extends HttpServlet {
 	private void userSign(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		User user = new User();
-		user.setName(request.getParameter("name"));
-		user.setPhone(request.getParameter("phone"));
-		user.setBirthDate(TimestampConverter.convertStringToTimestamp(request.getParameter("birthDate")));
-		user.setEmail(request.getParameter("email"));
-		user.setPassword(request.getParameter("password"));
-		user.setGender(request.getParameter("gender"));
-		user.setExperience(request.getParameter("experience"));
-		user.setPreferredLocation(User.convertJsonToList(request.getParameter("preferredLocation")));
-		user.setPreferredSchedule(User.convertJsonToList(request.getParameter("preferredSchedule")));
-		user.setPreferredJobCategory(User.convertJsonToList(request.getParameter("preferredJobCategory")));
-		user.setAppliedJobIds(User.convertJsonToIntegerList(request.getParameter("appliedJobIds")));
+		user.setName(request.getParameter("userName"));
+		user.setPhone(request.getParameter("userPhone"));
+		user.setBirthDate(TimestampConverter.convertStringToDate(request.getParameter("userBirth")));
+		user.setEmail(request.getParameter("userEmail"));
+		user.setPassword(request.getParameter("userPw"));
+		user.setGender(request.getParameter("userGender"));
+		user.setExperience(request.getParameter("userExperience"));
+		user.setPreferredLocation(request.getParameter("preferredLocation"));
+		user.setPreferredSchedule(request.getParameter("preferredDate"));
+		user.setPreferredJobCategory(request.getParameter("preferredJob"));
 		user.setAdditionalInfo(request.getParameter("additionalInfo"));
-
+		System.out.println(user);
 		try {
 			userDAO.userSign(user);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/jobList.jsp");
-			dispatcher.forward(request, response);
+			response.sendRedirect("job");
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "회원가입 중 오류가 발생했습니다.");
@@ -133,15 +131,15 @@ public class UserServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Integer userId = (Integer) session.getAttribute("id");
 
-		// pw가 맞는지 확인 후 실행
-		User existUser = userDAO.getUserInfo(userId);
-		String inputPw = request.getParameter("pw");
-
-		// pw 검증
-		if (inputPw == null || !existUser.getPassword().equals(inputPw)) {
-			response.sendRedirect("userPage.jsp?message=비밀번호가 일치하지 않습니다.");
-			return;
-		}
+//		// pw가 맞는지 확인 후 실행
+//		User existUser = userDAO.getUserInfo(userId);
+//		String inputPw = request.getParameter("pw");
+//
+//		// pw 검증
+//		if (inputPw == null || !existUser.getPassword().equals(inputPw)) {
+//			response.sendRedirect("userPage.jsp?message=비밀번호가 일치하지 않습니다.");
+//			return;
+//		}
 
 		// 사용자 정보 가져오기
 		User user = new User();
@@ -151,13 +149,13 @@ public class UserServlet extends HttpServlet {
 
 		// 새 비밀번호 입력 시 업데이트
 		String newPassword = request.getParameter("password");
-		user.setPassword(newPassword != null && !newPassword.isEmpty() ? newPassword : existUser.getPassword());
-//		user.setPassword(request.getParameter("password"));
+//		user.setPassword(newPassword != null && !newPassword.isEmpty() ? newPassword : existUser.getPassword());
+		user.setPassword(request.getParameter("password"));
 		user.setGender(request.getParameter("gender"));
 		user.setExperience(request.getParameter("experience"));
-		user.setPreferredLocation(User.convertJsonToList(request.getParameter("preferredLocation")));
-		user.setPreferredSchedule(User.convertJsonToList(request.getParameter("preferredSchedule")));
-		user.setPreferredJobCategory(User.convertJsonToList(request.getParameter("preferredJobCategory")));
+		user.setPreferredLocation(request.getParameter("preferredLocation"));
+		user.setPreferredSchedule(request.getParameter("preferredSchedule"));
+		user.setPreferredJobCategory(request.getParameter("preferredJobCategory"));
 		user.setAdditionalInfo(request.getParameter("additionalInfo"));
 
 		// DB 업데이트

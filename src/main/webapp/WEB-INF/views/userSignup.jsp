@@ -80,9 +80,8 @@
 <body>
     <div class="signup-container">
         <h2>구직자 회원가입</h2>
-        <form action="/user" method="post">
+        <form action="/son-job-ee/user" method="post">
     		<input type="hidden" name="action" value="signup"> <!-- action 값 추가 -->
-    		<input type="hidden" name="usertype" value="user"> <!-- usertype 값 추가 -->
             
             <div class="form-group">
            		<label for="userId">이메일 &nbsp;</label>
