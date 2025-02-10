@@ -147,6 +147,10 @@
 
 ## 🏗️ 아키텍쳐
 
+<div align="center">
+    <img src="https://github.com/user-attachments/assets/a2613324-59f2-4ec8-9e82-2b6ba3cc00d9" width="600"/>
+</div>
+
 <br><br>
 
 ## 🔩 프로젝트 구조
@@ -248,7 +252,10 @@ web-project/
 <br><br>
 
 ## ERD
-![Image](https://github.com/user-attachments/assets/eaf5e5ff-a13e-4bc3-883d-ba484f32650c)
+
+<img src="https://github.com/user-attachments/assets/eaf5e5ff-a13e-4bc3-883d-ba484f32650c" width="500"/>
+
+
 <br>
 
 ### users
