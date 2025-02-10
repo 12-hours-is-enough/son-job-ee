@@ -166,32 +166,6 @@
         <% } %>
 
     </div>
-    
-     <script>
-        function toggleDetail(btn) {
-            let detail = btn.parentNode.nextElementSibling;
-            if (detail.style.display === "block") {
-                detail.style.display = "none";
-                btn.textContent = "▼";
-            } else {
-                detail.style.display = "block";
-                btn.textContent = "▲";
-            }
-        }
-    </script>
-
-    <script>
-        function toggleDetail(btn) {
-            let detail = btn.parentNode.nextElementSibling;
-            if (detail.style.display === "block") {
-                detail.style.display = "none";
-                btn.textContent = "▼";
-            } else {
-                detail.style.display = "block";
-                btn.textContent = "▲";
-            }
-        }
-    </script>
-
+    <script src="assets/js/myStatus.js"></script>
 </body>
 </html>
