@@ -196,7 +196,7 @@
 		    	let formData = new URLSearchParams();
 		    	formData.append("action", "updateAppliedJob");
 		    	formData.append("jobId", jobId);
-		        console.log("지원하기 버튼 클릭됨! jobId:", jobId, "action: updateAppliedJob");
+		        console.log("지원하기 버튼 jobId:", jobId, "action: updateAppliedJob");
 		        
 		        fetch('/son-job-ee/user', {
 		            method: 'POST', // POST 요청 전송

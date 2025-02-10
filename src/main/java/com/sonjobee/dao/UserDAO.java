@@ -117,8 +117,8 @@ public class UserDAO {
 			pstmt.close();
 
 			String sql = "INSERT INTO users (name, phone, birth_date, email, password, gender, experience, "
-					+ "preferred_location, preferred_schedule, preferred_job_category, applied_job_ids, additional_info, created_at, updated_at) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+					+ "preferred_location, preferred_schedule, preferred_job_category , additional_info, created_at, updated_at) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, user.getName());
 			pstmt.setString(2, user.getPhone());
@@ -130,13 +130,12 @@ public class UserDAO {
 			pstmt.setString(8, user.getPreferredLocation());
 			pstmt.setString(9, user.getPreferredSchedule());
 			pstmt.setString(10, user.getPreferredJobCategory());
-			pstmt.setString(11, new ObjectMapper().writeValueAsString(user.getAppliedJobIds()));
-			pstmt.setString(12, user.getAdditionalInfo());
+			pstmt.setString(11, user.getAdditionalInfo());
 
 			int rowsAffected = pstmt.executeUpdate();
 			return rowsAffected > 0; // 회원가입 성공 시 true 반환
 
-		} catch (SQLException | IOException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Database error occurred while fetching userSign", e);
 		} finally {
